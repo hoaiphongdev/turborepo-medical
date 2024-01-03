@@ -6,8 +6,6 @@ module.exports = {
   extends: [
     'plugin:@typescript-eslint/strict-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
-    'prettier',
-    'plugin:prettier/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
@@ -32,17 +30,6 @@ module.exports = {
 
     'jsx-a11y/anchor-is-valid': ['off'],
 
-    'import/no-default-export': 'error',
-    'import/order': [
-      'error',
-      {
-        groups: ['builtin', 'external', 'internal', 'parent', 'sibling'],
-        alphabetize: {
-          order: 'asc',
-          caseInsensitive: true,
-        },
-      },
-    ],
   },
 
   overrides: [
@@ -51,13 +38,7 @@ module.exports = {
       rules: {
         '@typescript-eslint/consistent-type-definitions': 'off',
       },
-    },
-    {
-      files: ['src/**/*.stories.*', 'src/pages/**/*'],
-      rules: {
-        'import/no-default-export': 'off',
-      },
-    },
+    }
   ],
 
   // ESlint default behavior ignores file/folders starting with "." - https://github.com/eslint/eslint/issues/10341

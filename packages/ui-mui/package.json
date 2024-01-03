@@ -17,8 +17,7 @@
     "update-dependencies": "npx npm-check-updates -u"
   },
   "dependencies": {
-    "config-mui": "*",
-    "utils-mui": "*"
+    "config-mui": "*"
   },
   "devDependencies": {
     "eslint-config-base": "*",

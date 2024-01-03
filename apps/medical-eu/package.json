@@ -16,8 +16,7 @@
 		"config-tailwind": "*",
 		"ui": "*",
 		"ui-mui": "*",
-		"ui-tailwind": "*",
-		"utils-mui": "*"
+		"ui-tailwind": "*"
 	},
 	"devDependencies": {
 		"eslint-config-base": "*",

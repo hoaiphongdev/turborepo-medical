@@ -6,6 +6,13 @@
       ".": ["."]
     }
   },
-  "include": [".", ".eslintrc.cjs", ".storybook/**/*", "../config-mui/mui-theme.d.ts"],
-  "exclude": ["node_modules", ".next", ".turbo", "coverage", "dist", "compiled"]
+  "include": [".", ".eslintrc.cjs"],
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".turbo",
+    "coverage",
+    "dist",
+    "compiled"
+  ]
 }
