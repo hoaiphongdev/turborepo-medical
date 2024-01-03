@@ -5,5 +5,3 @@ VersionInfo.ts
 coverage
 dist
 compiled
-build-next-static
-build-storybook-static

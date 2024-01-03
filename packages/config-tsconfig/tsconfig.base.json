@@ -22,11 +22,5 @@
     "jsx": "react-jsx",
     "target": "ES6",
     "types": ["@testing-library/jest-dom"]
-  },
-  // Storybook
-  "ts-node": {
-    "compilerOptions": {
-      "module": "CommonJS"
-    }
   }
 }

@@ -1,20 +1,24 @@
 {
-  "extends": "config-tsconfig/tsconfig.base.json",
-  "compilerOptions": {
-    "baseUrl": "src",
-    "paths": {
-      ".": ["."]
-    }
-  },
-  "include": [".", ".eslintrc.cjs", ".storybook/**/*", "../config-mui/mui-theme.d.ts"],
-  "exclude": [
-    "node_modules",
-    ".next",
-    ".turbo",
-    "coverage",
-    "dist",
-    "compiled",
-    "build-next-static",
-    "build-storybook-static"
-  ]
+	"extends": "config-tsconfig/tsconfig.base.json",
+	"compilerOptions": {
+		"baseUrl": "src",
+		"paths": {
+			".": [
+				"."
+			]
+		}
+	},
+	"include": [
+		".",
+		".eslintrc.cjs",
+		"../config-mui/mui-theme.d.ts"
+	],
+	"exclude": [
+		"node_modules",
+		".next",
+		".turbo",
+		"coverage",
+		"dist",
+		"compiled"
+	]
 }

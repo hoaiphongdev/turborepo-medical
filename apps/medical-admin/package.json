@@ -19,6 +19,7 @@
     "utils-mui": "*"
   },
   "devDependencies": {
+    "config-eslint": "*",
     "config-tsconfig": "*",
     "utils-test": "*"
   }

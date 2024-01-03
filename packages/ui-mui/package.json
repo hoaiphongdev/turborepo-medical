@@ -14,11 +14,6 @@
     "lint": "eslint --max-warnings 0 .",
     "lint-fix": "eslint --fix .",
     "tsc": "tsc -p tsconfig.json",
-    "test": "jest --verbose",
-    "test-watch": "jest --verbose --watch",
-    "test-coverage": "jest --coverage --verbose",
-    "storybook": "storybook dev -p 6202 --quiet",
-    "storybook-build": "storybook build -o build-storybook-static",
     "update-dependencies": "npx npm-check-updates -u"
   },
   "dependencies": {
@@ -26,7 +21,7 @@
     "utils-mui": "*"
   },
   "devDependencies": {
-    "config-tsconfig": "*",
-    "utils-test": "*"
+    "config-eslint": "*",
+    "config-tsconfig": "*"
   }
 }
