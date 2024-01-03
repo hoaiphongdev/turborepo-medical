@@ -2,9 +2,7 @@
 
 module.exports = {
   parser: '@typescript-eslint/parser',
-
-  plugins: ['@typescript-eslint', 'testing-library', '@tanstack/query', 'jest-dom', 'jest', 'import'],
-
+  plugins: ['@typescript-eslint', '@tanstack/query', 'import'],
   extends: [
     'plugin:@typescript-eslint/strict-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
@@ -15,23 +13,15 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:@tanstack/eslint-plugin-query/recommended',
     'plugin:no-array-reduce/recommended',
-    'plugin:testing-library/react',
-    'plugin:jest-dom/recommended',
-    'plugin:storybook/recommended',
   ],
-
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
-
-    'storybook/no-title-property-in-meta': 'error',
-
     'prefer-template': 'error',
     'no-nested-ternary': 'error',
     'no-unneeded-ternary': 'error',
     'spaced-comment': 'error',
     'id-length': ['error', { min: 2, properties: 'never' }],
-
     '@typescript-eslint/ban-ts-comment': ['error', { 'ts-expect-error': 'allow-with-description' }],
     '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     '@typescript-eslint/array-type': ['error', { default: 'generic' }],
@@ -42,21 +32,11 @@ module.exports = {
 
     'jsx-a11y/anchor-is-valid': ['off'],
 
-    'jest/valid-title': [
-      'error',
-      {
-        mustMatch: {
-          it: [/should.*when/u.source, "Test title must include 'should' and 'when'"],
-        },
-      },
-    ],
-
     'import/no-default-export': 'error',
     'import/order': [
       'error',
       {
         groups: ['builtin', 'external', 'internal', 'parent', 'sibling'],
-        'newlines-between': 'always',
         alphabetize: {
           order: 'asc',
           caseInsensitive: true,

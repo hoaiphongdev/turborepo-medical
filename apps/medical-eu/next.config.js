@@ -9,6 +9,7 @@ const nextConfig = {
       transform: '@mui/icons-material/{{member}}',
     },
   },
+  optimizeFonts: true,
 };
 
 module.exports = nextConfig;

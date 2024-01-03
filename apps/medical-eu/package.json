@@ -1,25 +1,26 @@
 {
-  "name": "medical-eu",
-  "version": "0.0.0",
-  "scripts": {
-    "build": "next build",
-    "dev": "next dev --port 3101",
-    "lint": "eslint --max-warnings 0 .",
-    "lint-fix": "eslint --fix .",
-    "tsc": "tsc -p tsconfig.json",
-    "update-dependencies": "npx npm-check-updates -u"
-  },
-  "dependencies": {
-    "config-mui": "*",
-    "config-tailwind": "*",
-    "ui": "*",
-    "ui-mui": "*",
-    "ui-tailwind": "*",
-    "utils-mui": "*"
-  },
-  "devDependencies": {
-    "config-eslint": "*",
-    "config-tsconfig": "*",
-    "utils-test": "*"
-  }
+	"name": "medical-eu",
+	"version": "0.0.0",
+	"scripts": {
+		"build": "next build",
+		"dev": "next dev --port 3101",
+		"start": "next start --port 3101",
+		"server": "node server.js --port 3101",
+		"lint": "eslint --max-warnings 0 .",
+		"lint-fix": "eslint --fix .",
+		"tsc": "tsc -p tsconfig.json",
+		"update-dependencies": "npx npm-check-updates -u"
+	},
+	"dependencies": {
+		"config-mui": "*",
+		"config-tailwind": "*",
+		"ui": "*",
+		"ui-mui": "*",
+		"ui-tailwind": "*",
+		"utils-mui": "*"
+	},
+	"devDependencies": {
+		"eslint-config-base": "*",
+		"config-tsconfig": "*"
+	}
 }

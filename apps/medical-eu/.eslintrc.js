@@ -2,11 +2,9 @@
 
 module.exports = {
   root: true,
-
   parserOptions: {
     project: true,
     tsconfigRootDir: __dirname,
   },
-
-  extends: ['config-eslint'],
+  extends: ['eslint-config-base'],
 };

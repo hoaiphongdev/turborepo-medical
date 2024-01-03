@@ -20,7 +20,7 @@
     "declaration": true,
     "declarationMap": true,
     "jsx": "react-jsx",
-    "target": "ES6",
-    "types": ["@testing-library/jest-dom"]
-  }
+    "target": "ES6"
+  },
+  "exclude": ["node_modules", "server.js"]
 }

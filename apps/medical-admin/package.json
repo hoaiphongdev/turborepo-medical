@@ -4,6 +4,8 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev --port 3100",
+    "start": "next start  --port 3100",
+    "server": "node server.js --port 3100",
     "lint": "eslint --max-warnings 0 .",
     "lint-fix": "eslint --fix .",
     "tsc": "tsc -p tsconfig.json",
@@ -19,8 +21,7 @@
     "utils-mui": "*"
   },
   "devDependencies": {
-    "config-eslint": "*",
-    "config-tsconfig": "*",
-    "utils-test": "*"
+    "eslint-config-base": "*",
+    "config-tsconfig": "*"
   }
 }

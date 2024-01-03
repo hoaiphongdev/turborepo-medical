@@ -8,5 +8,5 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
 
-  extends: ['config-eslint'],
+  extends: ['eslint-config-base'],
 };
