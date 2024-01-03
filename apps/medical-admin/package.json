@@ -1,0 +1,25 @@
+{
+  "name": "medical-admin",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port 3100",
+    "lint": "eslint --max-warnings 0 .",
+    "lint-fix": "eslint --fix .",
+    "tsc": "tsc -p tsconfig.json",
+    "format-fix": "prettier --config ../../.prettierrc --write --ignore-unknown -l .",
+    "update-dependencies": "npx npm-check-updates -u"
+  },
+  "dependencies": {
+    "config-mui": "*",
+    "config-tailwind": "*",
+    "ui": "*",
+    "ui-mui": "*",
+    "ui-tailwind": "*",
+    "utils-mui": "*"
+  },
+  "devDependencies": {
+    "config-tsconfig": "*",
+    "utils-test": "*"
+  }
+}
