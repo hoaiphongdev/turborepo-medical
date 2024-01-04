@@ -59,4 +59,3 @@ export const Button: FC<IButtonProps> = ({
     </button>
   )
 }
-

@@ -1,14 +1,20 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+const path = require('path')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
   swcMinify: true,
-  reactStrictMode: true,
-  modularizeImports: {
-    '@mui/icons-material': {
-      transform: '@mui/icons-material/{{member}}',
-    },
-  },
-  optimizeFonts: true,
-};
+  reactStrictMode: false,
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      apexcharts: path.resolve(__dirname, '../../node_modules/apexcharts-clevision')
+    }
 
-module.exports = nextConfig;
+    return config
+  },
+  optimizeFonts: true
+}
+
+module.exports = nextConfig

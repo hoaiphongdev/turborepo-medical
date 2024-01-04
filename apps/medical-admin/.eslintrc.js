@@ -1,10 +1,9 @@
-/** @type {import("eslint").Linter.Config} */
-
+/** @type {import('eslint').Linter.Config} */
 module.exports = {
   root: true,
   parserOptions: {
     project: true,
-    tsconfigRootDir: __dirname,
+    tsconfigRootDir: __dirname
   },
-  extends: ['eslint-config-base'],
-};
+  extends: ['next/core-web-vitals', 'eslint-config-base']
+}

@@ -1,15 +1,19 @@
 /** @type {import('next').NextConfig} */
+const path = require('path')
 
 const nextConfig = {
   output: 'export',
   swcMinify: true,
-  reactStrictMode: true,
-  modularizeImports: {
-    '@mui/icons-material': {
-      transform: '@mui/icons-material/{{member}}',
-    },
-  },
-  optimizeFonts: true,
-};
+  reactStrictMode: false,
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      apexcharts: path.resolve(__dirname, '../../node_modules/apexcharts-clevision')
+    }
 
-module.exports = nextConfig;
+    return config
+  },
+  optimizeFonts: true
+}
+
+module.exports = nextConfig

@@ -1,3 +1,3 @@
-export default function Page(): JSX.Element {
-  return <main>EU SITE</main>;
+export default function Page() {
+  return <main>EU SITE</main>
 }

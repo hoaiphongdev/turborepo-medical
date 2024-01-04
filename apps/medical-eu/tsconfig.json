@@ -3,7 +3,9 @@
   "compilerOptions": {
     "baseUrl": "src",
     "paths": {
-      ".": ["."]
+      ".": ["."],
+      "apexcharts": ["../../../node_modules/apexcharts-clevision"],
+      "apexcharts/*": ["../../../node_modules/apexcharts-clevision/*"]
     }
   },
   // Files and folders starting with a . are ignored by the glob patterns
@@ -12,7 +14,9 @@
     "**/*.ts",
     "**/*.tsx",
     ".",
+    "src",
     ".eslintrc.cjs",
+    ".eslintrc.js",
     "../../packages/config-mui/mui-theme.d.ts",
     ".next/types/**/*.ts"
   ],
