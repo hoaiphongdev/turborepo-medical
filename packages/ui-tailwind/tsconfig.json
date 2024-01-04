@@ -7,12 +7,5 @@
     }
   },
   "include": [".", ".eslintrc.cjs"],
-  "exclude": [
-    "node_modules",
-    ".next",
-    ".turbo",
-    "coverage",
-    "dist",
-    "compiled"
-  ]
+  "exclude": ["node_modules", ".next", ".turbo", "coverage", "dist", "compiled"]
 }

@@ -2,38 +2,23 @@
 
 module.exports = {
 	parser: '@typescript-eslint/parser',
-	plugins: ['@typescript-eslint', '@tanstack/query', 'import'],
-	extends: [
-		'plugin:@typescript-eslint/strict-type-checked',
-		'plugin:@typescript-eslint/stylistic-type-checked',
-		'plugin:jsx-a11y/recommended',
-		'plugin:react/recommended',
-		'plugin:react-hooks/recommended',
-		'plugin:@tanstack/eslint-plugin-query/recommended',
-		'plugin:no-array-reduce/recommended'
-	],
+	plugins: ['@tanstack/query', 'import'],
+	extends: ['plugin:@typescript-eslint/recommended', 'plugin:@tanstack/eslint-plugin-query/recommended'],
 	rules: {
 		'react/display-name': 'off',
 		'@next/next/no-img-element': 'off',
+		'react/no-unescaped-entities': 'off',
+		'import/no-anonymous-default-export': 'off',
+		'@typescript-eslint/no-unused-vars': 'error',
+		'@typescript-eslint/ban-ts-comment': 'off',
+		'@typescript-eslint/no-explicit-any': 'off',
+		'@typescript-eslint/no-non-null-assertion': 'off',
 		'react/react-in-jsx-scope': 'off',
 		'react/prop-types': 'off',
-		'no-nested-ternary': 'error',
-		'no-unneeded-ternary': 'error',
-		'spaced-comment': 'error',
-		'id-length': ['error', { min: 2, properties: 'never' }],
-		'@typescript-eslint/no-explicit-any': 'off',
-		'@typescript-eslint/ban-ts-comment': 'off',
-		'@typescript-eslint/no-unsafe-member-access': 'off',
-		'@typescript-eslint/no-unsafe-assignment': 'off',
-		'@typescript-eslint/no-floating-promises': 'off',
-		'@typescript-eslint/array-type': ['error', { default: 'generic' }],
-		'@typescript-eslint/ban-types': 'error',
-		'@typescript-eslint/prefer-nullish-coalescing': 'error',
-		'@typescript-eslint/no-unnecessary-condition': 'error',
-		'jsx-a11y/anchor-is-valid': ['off'],
-		'@typescript-eslint/no-empty-function': 'off'
+		'@typescript-eslint/no-implicit-any-index': 'off',
+		'@typescript-eslint/no-empty-function': 'off',
+		'@typescript-eslint/ban-types': 'off'
 	},
-
 	overrides: [
 		{
 			files: ['ProcessEnv.d.ts'],
@@ -60,11 +45,20 @@ module.exports = {
 		typescript: {},
 		'import/resolver': {
 			typescript: {
-				project: ['./tsconfig.json', 'apps/*/tsconfig.json', 'packages/*/tsconfig.json']
+				project: [
+					'./tsconfig.json',
+					'apps/*/tsconfig.json',
+					'apps/**/*/tsconfig.json',
+					'apps/**/**/*/tsconfig.json',
+					'packages/*/tsconfig.json'
+				]
 			}
 		},
 		react: {
 			version: 'detect'
 		}
+	},
+	globals: {
+		JSX: 'readonly'
 	}
-};
+}

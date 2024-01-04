@@ -1,8 +1,8 @@
 export const APP_TYPES = {
   AUTH: {
-    LOGIN: 'AUTH/LOGIN',
+    LOGIN: 'AUTH/LOGIN'
   },
   USER: {
-    PROFILE: 'USER/PROFILE',
+    PROFILE: 'USER/PROFILE'
   }
 }

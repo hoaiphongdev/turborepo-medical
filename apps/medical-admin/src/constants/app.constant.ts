@@ -22,4 +22,3 @@ export const OS_LIST = {
   ANDROID: 'Android',
   LINUX: 'Linux'
 }
-

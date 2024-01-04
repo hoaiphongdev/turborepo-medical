@@ -1,4 +1,4 @@
-import { defineConfig } from 'tsup';
+import { defineConfig } from 'tsup'
 
 const tsupConfig = defineConfig({
   entry: ['src/index.ts'],
@@ -8,8 +8,8 @@ const tsupConfig = defineConfig({
   splitting: false,
   minify: true,
   clean: true,
-  tsconfig: 'tsconfig.prod.json',
-});
+  tsconfig: 'tsconfig.prod.json'
+})
 
 // eslint-disable-next-line import/no-default-export
-export default tsupConfig;
+export default tsupConfig
