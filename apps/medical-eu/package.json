@@ -12,9 +12,9 @@
 		"update-dependencies": "npx npm-check-updates -u"
 	},
 	"dependencies": {
+		"core": "*",
 		"config-mui": "*",
 		"config-tailwind": "*",
-		"ui": "*",
 		"ui-mui": "*",
 		"ui-tailwind": "*"
 	},
