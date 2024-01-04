@@ -15,4 +15,4 @@ dayjs.extend(timezonePlugin)
 dayjs.locale(en)
 dayjs.locale(vi)
 
-export default dayjs
+export const xDayjs = dayjs

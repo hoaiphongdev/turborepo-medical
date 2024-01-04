@@ -13,7 +13,6 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
-  console.log('props', props)
   return <div>{/* TODO MODAL*/}</div>
 }
 
