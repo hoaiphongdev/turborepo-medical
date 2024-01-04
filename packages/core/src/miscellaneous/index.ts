@@ -1,3 +1,1 @@
-export * from './DayJS'
-export * from './DefaultLocale'
-export * from './MetaSeo'
+export * from './dayjs'
