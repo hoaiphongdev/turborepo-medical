@@ -16,7 +16,7 @@ import Icon from '@core/components/icon'
 import ReactApexcharts from '@core/components/react-apexcharts'
 
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'config-mui'
 
 const series = [
   {

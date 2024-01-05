@@ -8,7 +8,7 @@ import MuiToolbar, { ToolbarProps } from '@mui/material/Toolbar'
 import { LayoutProps } from '@core/layouts/types'
 
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'config-mui'
 
 interface Props {
   hidden: LayoutProps['hidden']

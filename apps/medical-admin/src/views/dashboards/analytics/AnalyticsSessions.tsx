@@ -12,7 +12,7 @@ import { ApexOptions } from 'apexcharts'
 import ReactApexcharts from '@core/components/react-apexcharts'
 
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'config-mui'
 
 const series = [{ data: [0, 20, 5, 30, 15, 45] }]
 

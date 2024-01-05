@@ -6,7 +6,7 @@ import { GridProps } from '@mui/material/Grid'
 
 // ** Type Imports
 import { IconProps } from '@iconify/react'
-import { ThemeColor } from '@core/layouts/types'
+import { ThemeColor } from 'config-mui'
 
 // ** Types of Basic Custom Radios
 export type CustomRadioBasicData = {

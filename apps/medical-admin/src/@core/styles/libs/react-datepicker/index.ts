@@ -7,7 +7,7 @@ import { useSettings } from '@core/hooks/useSettings' // ** Hooks Imports
 import useBgColor, { UseBgColorType } from '@core/hooks/useBgColor'
 
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'config-mui'
 
 // ** Styles
 import 'react-datepicker/dist/react-datepicker.css'

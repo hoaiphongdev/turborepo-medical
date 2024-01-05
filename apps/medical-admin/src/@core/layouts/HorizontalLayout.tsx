@@ -22,7 +22,7 @@ import ScrollToTop from '@core/components/scroll-to-top'
 import AppBarContent from './components/horizontal/app-bar-content'
 
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'config-mui'
 
 const HorizontalLayoutWrapper = styled('div')({
   height: '100%',

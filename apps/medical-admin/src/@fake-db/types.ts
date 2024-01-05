@@ -1,5 +1,5 @@
 // Type Imports
-import { ThemeColor } from '@core/layouts/types'
+import { ThemeColor } from 'config-mui'
 import {
   CardStatsCharacterProps,
   CardStatsHorizontalProps,

@@ -19,7 +19,7 @@ import Icon from '@core/components/icon'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 
 // ** Type Imports
-import { ThemeColor } from '@core/layouts/types'
+import { ThemeColor } from 'config-mui'
 import { Settings } from '@core/context/settingsContext'
 import { CustomAvatarProps } from '@core/components/mui/avatar/types'
 
@@ -28,7 +28,7 @@ import CustomChip from '@core/components/mui/chip'
 import CustomAvatar from '@core/components/mui/avatar'
 
 // ** Util Import
-import { getInitials } from '@core/utils/get-initials'
+import { getInitials } from 'config-mui'
 
 export type NotificationsType = {
   meta: string

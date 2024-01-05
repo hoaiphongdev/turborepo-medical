@@ -1,5 +1,23 @@
 {
   "name": "config-mui",
   "version": "0.0.0",
-  "main": "index.ts"
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "eslint --max-warnings 0 .",
+    "lint-fix": "eslint --fix .",
+    "tsc": "tsc -p tsconfig.json",
+    "update-dependencies": "npx npm-check-updates -u"
+  },
+  "devDependencies": {
+    "config-eslint": "*",
+    "config-tsconfig": "*"
+  }
 }

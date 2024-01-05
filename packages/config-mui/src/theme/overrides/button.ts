@@ -2,10 +2,8 @@
 import { OwnerStateThemeType } from './'
 
 // ** Theme Config Imports
-import themeConfig from 'configs/themeConfig'
-
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'utils'
 
 const Button = () => {
   return {
@@ -94,7 +92,7 @@ const Button = () => {
     },
     MuiButtonBase: {
       defaultProps: {
-        disableRipple: themeConfig.disableRipple
+        disableRipple: false
       }
     }
   }

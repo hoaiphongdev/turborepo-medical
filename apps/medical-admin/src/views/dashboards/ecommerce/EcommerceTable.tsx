@@ -10,15 +10,12 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid'
 // ** Icon Imports
 import Icon from '@core/components/icon'
 
-// ** Types Imports
-import { ThemeColor } from '@core/layouts/types'
-
 // ** Custom Components
 import CustomChip from '@core/components/mui/chip'
 import CustomAvatar from '@core/components/mui/avatar'
 
 // ** Utils Import
-import { getInitials } from '@core/utils/get-initials'
+import { getInitials, ThemeColor } from 'config-mui'
 
 interface TableBodyRowType {
   id: number
