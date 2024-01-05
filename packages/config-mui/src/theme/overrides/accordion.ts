@@ -1,13 +1,8 @@
 // ** Type Import
 import { OwnerStateThemeType } from './'
+import { Skin } from 'types'
 
-// ** Hook Import
-import { useSettings } from '@core/hooks/useSettings'
-
-const Accordion = () => {
-  // Hook & Var
-  const { settings } = useSettings()
-  const { skin } = settings
+const Accordion = (skin: Skin) => {
 
   return {
     MuiAccordion: {

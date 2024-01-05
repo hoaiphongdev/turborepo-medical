@@ -2,7 +2,7 @@
 import { Dispatch } from 'redux'
 
 // ** Theme Type Import
-import { ThemeColor } from '@core/layouts/types'
+import { ThemeColor } from 'config-mui'
 
 export type CalendarFiltersType = 'Personal' | 'Business' | 'Family' | 'Holiday' | 'ETC'
 

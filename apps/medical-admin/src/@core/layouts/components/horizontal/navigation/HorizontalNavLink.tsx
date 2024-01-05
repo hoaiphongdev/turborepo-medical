@@ -30,7 +30,7 @@ import Translations from 'layouts/components/Translations'
 import CanViewNavLink from 'layouts/components/acl/CanViewNavLink'
 
 // ** Util Imports
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'config-mui'
 import { handleURLQueries } from '@core/layouts/utils'
 
 interface Props {

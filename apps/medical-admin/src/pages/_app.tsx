@@ -44,7 +44,7 @@ import { SettingsConsumer, SettingsProvider } from '@core/context/settingsContex
 import ReactHotToast from '@core/styles/libs/react-hot-toast'
 
 // ** Utils Imports
-import { createEmotionCache } from '@core/utils/create-emotion-cache'
+import { createEmotionCache } from 'config-mui'
 
 // ** Prismjs Styles
 import 'prismjs'

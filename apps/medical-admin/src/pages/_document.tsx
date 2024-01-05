@@ -8,7 +8,7 @@ import Document, { Html, Head, Main, NextScript } from 'next/document'
 import createEmotionServer from '@emotion/server/create-instance'
 
 // ** Utils Imports
-import { createEmotionCache } from '@core/utils/create-emotion-cache'
+import { createEmotionCache } from 'config-mui'
 
 class CustomDocument extends Document {
   render() {

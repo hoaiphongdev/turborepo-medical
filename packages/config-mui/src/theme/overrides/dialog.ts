@@ -1,6 +1,6 @@
 // ** Type Imports
 import { OwnerStateThemeType } from './'
-import { Skin } from '@core/layouts/types'
+import { Skin } from 'types'
 
 const Dialog = (skin: Skin) => {
   return {

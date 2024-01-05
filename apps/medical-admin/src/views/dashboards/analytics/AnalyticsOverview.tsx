@@ -13,7 +13,7 @@ import { ApexOptions } from 'apexcharts'
 import ReactApexcharts from '@core/components/react-apexcharts'
 
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'config-mui'
 
 const AnalyticsOverview = () => {
   // ** Hook

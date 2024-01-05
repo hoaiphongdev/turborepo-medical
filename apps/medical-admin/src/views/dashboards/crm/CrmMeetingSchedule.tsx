@@ -10,7 +10,7 @@ import CardContent from '@mui/material/CardContent'
 import Icon from '@core/components/icon'
 
 // ** Types
-import { ThemeColor } from '@core/layouts/types'
+import { ThemeColor } from 'config-mui'
 
 // ** Custom Components
 import CustomChip from '@core/components/mui/chip'

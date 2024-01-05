@@ -6,7 +6,7 @@ import MuiTimelineDot from '@mui/lab/TimelineDot'
 import useBgColor, { UseBgColorType } from '@core/hooks/useBgColor'
 
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'config-mui'
 
 // ** Types
 import { CustomTimelineDotProps, ColorsType } from './types'

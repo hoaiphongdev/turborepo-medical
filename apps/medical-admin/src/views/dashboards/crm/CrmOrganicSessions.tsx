@@ -17,7 +17,7 @@ import OptionsMenu from '@core/components/option-menu'
 import ReactApexcharts from '@core/components/react-apexcharts'
 
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'config-mui'
 
 const CrmOrganicSessions = () => {
   // ** Hook
