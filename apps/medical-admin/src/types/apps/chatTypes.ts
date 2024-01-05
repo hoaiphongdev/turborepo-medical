@@ -1,6 +1,6 @@
 // ** Types
 import { Dispatch } from 'redux'
-import { ThemeColor } from '@core/layouts/types'
+import { ThemeColor } from 'config-mui'
 
 export type StatusType = 'busy' | 'away' | 'online' | 'offline'
 

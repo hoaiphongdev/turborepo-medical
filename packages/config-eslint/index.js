@@ -2,7 +2,7 @@
 
 module.exports = {
 	parser: '@typescript-eslint/parser',
-	plugins: ['@tanstack/query', 'import'],
+	plugins: ['@typescript-eslint', '@tanstack/query', 'import'],
 	extends: ['plugin:@typescript-eslint/recommended', 'plugin:@tanstack/eslint-plugin-query/recommended'],
 	rules: {
 		'react/display-name': 'off',
@@ -17,7 +17,8 @@ module.exports = {
 		'react/prop-types': 'off',
 		'@typescript-eslint/no-implicit-any-index': 'off',
 		'@typescript-eslint/no-empty-function': 'off',
-		'@typescript-eslint/ban-types': 'off'
+		'@typescript-eslint/ban-types': 'off',
+		'@typescript-eslint/consistent-type-definitions': 'off'
 	},
 	overrides: [
 		{

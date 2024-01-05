@@ -2,9 +2,6 @@
 import { Theme } from '@mui/material/styles'
 import { ComponentsPropsList } from '@mui/material'
 
-// ** Type Import
-import { Settings } from '@core/context/settingsContext'
-
 export type OwnerStateThemeType = {
   theme: Theme
   ownerState: ComponentsPropsList[keyof ComponentsPropsList] & Record<string, unknown>
@@ -44,8 +41,15 @@ import MuiButtonGroup from './buttonGroup'
 import MuiAutocomplete from './autocomplete'
 import MuiToggleButton from './toggleButton'
 
-const Overrides = (settings: Settings) => {
-  const { skin, mode } = settings
+import { Mode, Skin } from '../../types'
+
+type OverridesTypes = {
+  skin: Skin
+  mode: Mode
+}
+
+const Overrides = (props: OverridesTypes) => {
+  const { skin = 'default', mode = 'light' } = props
 
   const fab = MuiFab()
   const chip = MuiChip()
@@ -69,7 +73,7 @@ const Overrides = (settings: Settings) => {
   const switches = MuiSwitches()
   const timeline = MuiTimeline()
   const popover = MuiPopover(skin)
-  const accordion = MuiAccordion()
+  const accordion = MuiAccordion(skin)
   const snackbar = MuiSnackbar(skin)
   const pagination = MuiPagination()
   const autocomplete = MuiAutocomplete(skin)

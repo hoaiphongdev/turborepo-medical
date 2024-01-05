@@ -22,14 +22,14 @@ import TableContainer from '@mui/material/TableContainer'
 import Icon from '@core/components/icon'
 
 // ** Type Imports
-import { ThemeColor } from '@core/layouts/types'
+import { ThemeColor } from 'config-mui'
 
 // ** Custom Components
 import CustomChip from '@core/components/mui/chip'
 import OptionsMenu from '@core/components/option-menu'
 
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'config-mui'
 
 interface StatusObj {
   [ke: string]: {

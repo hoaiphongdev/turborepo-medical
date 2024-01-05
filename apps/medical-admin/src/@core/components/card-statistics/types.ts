@@ -2,7 +2,7 @@
 import { ReactNode } from 'react'
 
 // ** Types
-import { ThemeColor } from '@core/layouts/types'
+import { ThemeColor } from 'config-mui'
 
 export type CardStatsHorizontalProps = {
   title: string

@@ -21,14 +21,14 @@ import Icon from '@core/components/icon'
 import { ApexOptions } from 'apexcharts'
 
 // ** Type Import
-import { ThemeColor } from '@core/layouts/types'
+import { ThemeColor } from 'config-mui'
 
 // ** Custom Components Imports
 import OptionsMenu from '@core/components/option-menu'
 import ReactApexcharts from '@core/components/react-apexcharts'
 
 // ** Util Import
-import { hexToRGBA } from '@core/utils/hex-to-rgba'
+import { hexToRGBA } from 'config-mui'
 
 interface DataType {
   title: string
