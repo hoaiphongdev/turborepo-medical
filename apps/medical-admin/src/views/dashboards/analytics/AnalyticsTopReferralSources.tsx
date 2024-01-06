@@ -29,7 +29,7 @@ import CustomChip from '@core/components/mui/chip'
 import OptionsMenu from '@core/components/option-menu'
 
 // ** Util Import
-import { hexToRGBA } from 'config-mui'
+import { hexToRGBA } from 'core'
 
 interface StatusObj {
   [ke: string]: {

@@ -30,7 +30,7 @@ import Translations from 'layouts/components/Translations'
 import CanViewNavLink from 'layouts/components/acl/CanViewNavLink'
 
 // ** Util Imports
-import { hexToRGBA } from 'config-mui'
+import { hexToRGBA } from 'core'
 import { handleURLQueries } from '@core/layouts/utils'
 
 interface Props {
@@ -74,11 +74,7 @@ const HorizontalNavLink = (props: Props) => {
   const Wrapper = !hasParent ? List : Fragment
 
   const isNavLinkActive = () => {
-    if (router.pathname === item.path || handleURLQueries(router, item.path)) {
-      return true
-    } else {
-      return false
-    }
+    return router.pathname === item.path || handleURLQueries(router, item.path)
   }
 
   return (

@@ -3,7 +3,6 @@ import { OwnerStateThemeType } from './'
 import { Skin } from 'types'
 
 const Accordion = (skin: Skin) => {
-
   return {
     MuiAccordion: {
       styleOverrides: {

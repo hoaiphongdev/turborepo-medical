@@ -1,14 +1,7 @@
-// ** React Import
 import { Children } from 'react'
-
-// ** Next Import
 import Document, { Html, Head, Main, NextScript } from 'next/document'
-
-// ** Emotion Imports
 import createEmotionServer from '@emotion/server/create-instance'
-
-// ** Utils Imports
-import { createEmotionCache } from 'config-mui'
+import { createEmotionCache } from 'core'
 
 class CustomDocument extends Document {
   render() {

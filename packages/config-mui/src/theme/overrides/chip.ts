@@ -2,7 +2,7 @@
 import { OwnerStateThemeType } from './'
 
 // ** Util Imports
-import { hexToRGBA } from 'utils'
+import { hexToRGBA } from 'core'
 
 const Chip = () => {
   return {

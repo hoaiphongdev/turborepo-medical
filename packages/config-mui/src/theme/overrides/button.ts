@@ -3,7 +3,7 @@ import { OwnerStateThemeType } from './'
 
 // ** Theme Config Imports
 // ** Util Import
-import { hexToRGBA } from 'utils'
+import { hexToRGBA } from 'core'
 
 const Button = () => {
   return {

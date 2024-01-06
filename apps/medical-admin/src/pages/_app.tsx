@@ -20,9 +20,6 @@ import 'configs/i18n'
 import { defaultACLObj } from 'configs/acl'
 import themeConfig from 'configs/themeConfig'
 
-// ** Fake-DB Import
-import '@fake-db'
-
 // ** Third Party Import
 import { Toaster } from 'react-hot-toast'
 
@@ -44,31 +41,27 @@ import { SettingsConsumer, SettingsProvider } from '@core/context/settingsContex
 import ReactHotToast from '@core/styles/libs/react-hot-toast'
 
 // ** Utils Imports
-import { createEmotionCache } from 'config-mui'
+import { createEmotionCache } from 'core'
 
 // ** Prismjs Styles
 import 'prismjs'
 import 'prismjs/themes/prism-tomorrow.css'
-import 'prismjs/components/prism-jsx'
-import 'prismjs/components/prism-tsx'
 
 // ** React Perfect Scrollbar Style
 import 'react-perfect-scrollbar/dist/css/styles.css'
 
-// import 'iconify-bundle/icons-bundle-react'
-
-// ** Global css styles
-import 'styles/global.css'
-
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactElement, ReactNode, useEffect, useState } from 'react'
 
-import 'nprogress/nprogress.css'
 import { REQUEST_HEADER_AUTH_KEY, ACCESS_TOKEN_KEY, TOKEN_TYPE } from 'core'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import { isEmpty } from 'lodash'
-import { IS_DEVELOPMENT } from 'constants/app.constant'
+
+// ** Global css styles
+import 'iconify-bundle/icons-bundle-react'
+import 'nprogress/nprogress.css'
+import 'styles/global.css'
 
 axios.interceptors.request.use(
   (config) => {
@@ -79,10 +72,6 @@ axios.interceptors.request.use(
     return config
   },
   async (error) => {
-    if (IS_DEVELOPMENT) {
-      console.error(error)
-    }
-
     return Promise.reject(error)
   }
 )
