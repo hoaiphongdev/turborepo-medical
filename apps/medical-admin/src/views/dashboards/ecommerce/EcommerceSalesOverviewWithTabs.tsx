@@ -1,7 +1,4 @@
-// ** React Imports
 import { SyntheticEvent, useState } from 'react'
-
-// ** MUI Import
 import Box from '@mui/material/Box'
 import Tab from '@mui/material/Tab'
 import Card from '@mui/material/Card'
@@ -17,19 +14,12 @@ import TableHead from '@mui/material/TableHead'
 import CardHeader from '@mui/material/CardHeader'
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
-
-// ** Icon Imports
 import Icon from '@core/components/icon'
 
-// ** Type Imports
 import { ThemeColor } from 'config-mui'
-
-// ** Custom Components
 import CustomChip from '@core/components/mui/chip'
 import OptionsMenu from '@core/components/option-menu'
-
-// ** Util Import
-import { hexToRGBA } from 'config-mui'
+import { hexToRGBA } from 'core'
 
 interface StatusObj {
   [ke: string]: {
@@ -37,11 +27,13 @@ interface StatusObj {
     color: ThemeColor
   }
 }
+
 interface TabAvatarType {
   imgWidth: number
   category: string
   imgHeight: number
 }
+
 interface TabContentType {
   imgAlt: string
   imgSrc: string
@@ -51,6 +43,7 @@ interface TabContentType {
   conversionDifference?: 'positive' | 'negative'
   status: 'in-stock' | 'coming-soon' | 'out-of-stock'
 }
+
 interface TabContentDataType {
   mobile: TabContentType[]
   desktop: TabContentType[]
@@ -199,7 +192,14 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
                 <Avatar alt={row.imgAlt} src={row.imgSrc} variant="rounded" sx={{ width: 34, height: 34 }} />
               </TableCell>
               <TableCell>
-                <Typography variant="body2" sx={{ fontWeight: 600, whiteSpace: 'nowrap', color: 'text.primary' }}>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: 600,
+                    whiteSpace: 'nowrap',
+                    color: 'text.primary'
+                  }}
+                >
                   {row.product}
                 </Typography>
               </TableCell>
@@ -209,13 +209,22 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
                   size="small"
                   label={statusObj[row.status].text}
                   color={statusObj[row.status].color}
-                  sx={{ height: 20, fontWeight: 500, '& .MuiChip-label': { px: 1.625, lineHeight: 1.539 } }}
+                  sx={{
+                    height: 20,
+                    fontWeight: 500,
+                    '& .MuiChip-label': { px: 1.625, lineHeight: 1.539 }
+                  }}
                 />
               </TableCell>
               <TableCell>
                 <Typography
                   variant="body2"
-                  sx={{ fontWeight: 600, textAlign: 'right', whiteSpace: 'nowrap', color: 'text.primary' }}
+                  sx={{
+                    fontWeight: 600,
+                    textAlign: 'right',
+                    whiteSpace: 'nowrap',
+                    color: 'text.primary'
+                  }}
                 >
                   {row.revenue}
                 </Typography>

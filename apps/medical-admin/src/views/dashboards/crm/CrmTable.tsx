@@ -15,7 +15,8 @@ import CustomChip from '@core/components/mui/chip'
 import CustomAvatar from '@core/components/mui/avatar'
 
 // ** Utils Import
-import { getInitials, ThemeColor } from 'config-mui'
+import { ThemeColor } from 'config-mui'
+import { getInitials } from 'core'
 
 interface TableBodyRowType {
   id: number
@@ -211,7 +212,14 @@ const columns: GridColDef[] = [
     renderCell: ({ row }: CellType) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         {roleObj[row.role].icon}
-        <Typography sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>{row.role}</Typography>
+        <Typography
+          sx={{
+            color: 'text.secondary',
+            textTransform: 'capitalize'
+          }}
+        >
+          {row.role}
+        </Typography>
       </Box>
     )
   },
@@ -226,7 +234,10 @@ const columns: GridColDef[] = [
         size="small"
         label={row.status}
         color={statusObj[row.status].color}
-        sx={{ textTransform: 'capitalize', '& .MuiChip-label': { px: 2.5, lineHeight: 1.385 } }}
+        sx={{
+          textTransform: 'capitalize',
+          '& .MuiChip-label': { px: 2.5, lineHeight: 1.385 }
+        }}
       />
     )
   }
