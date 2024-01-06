@@ -16,91 +16,91 @@ export type VerticalNavToggle = 'accordion' | 'collapse'
 export type HorizontalMenuToggle = 'hover' | 'click'
 
 export type BlankLayoutProps = {
-	children: ReactNode
+  children: ReactNode
 }
 
 export type BlankLayoutWithAppBarProps = {
-	children: ReactNode
+  children: ReactNode
 }
 
 export type NavSectionTitle = {
-	auth?: boolean
-	action?: string
-	subject?: string
-	sectionTitle: string
+  auth?: boolean
+  action?: string
+  subject?: string
+  sectionTitle: string
 }
 
 export type NavGroup = {
-	icon?: string
-	title: string
-	auth?: boolean
-	action?: string
-	subject?: string
-	badgeContent?: string
-	children?: (NavGroup | NavLink)[]
-	badgeColor?: 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info'
+  icon?: string
+  title: string
+  auth?: boolean
+  action?: string
+  subject?: string
+  badgeContent?: string
+  children?: (NavGroup | NavLink)[]
+  badgeColor?: 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info'
 }
 
 export type NavLink = {
-	icon?: string
-	path?: string
-	title: string
-	auth?: boolean
-	action?: string
-	subject?: string
-	disabled?: boolean
-	badgeContent?: string
-	externalLink?: boolean
-	openInNewTab?: boolean
-	badgeColor?: 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info'
+  icon?: string
+  path?: string
+  title: string
+  auth?: boolean
+  action?: string
+  subject?: string
+  disabled?: boolean
+  badgeContent?: string
+  externalLink?: boolean
+  openInNewTab?: boolean
+  badgeColor?: 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info'
 }
 
 export type VerticalNavItemsType = (NavLink | NavGroup | NavSectionTitle)[]
 export type HorizontalNavItemsType = (NavLink | NavGroup)[]
 
 export type FooterProps = {
-	sx?: SxProps<Theme>
-	content?: (props?: any) => ReactNode
+  sx?: SxProps<Theme>
+  content?: (props?: any) => ReactNode
 }
 
 export type VerticalLayoutProps = {
-	appBar?: {
-		componentProps?: AppBarProps
-		content?: (props?: any) => ReactNode
-	}
-	navMenu: {
-		lockedIcon?: ReactNode
-		unlockedIcon?: ReactNode
-		navItems?: VerticalNavItemsType
-		content?: (props?: any) => ReactNode
-		branding?: (props?: any) => ReactNode
-		afterContent?: (props?: any) => ReactNode
-		beforeContent?: (props?: any) => ReactNode
-		componentProps?: Omit<SwipeableDrawerProps, 'open' | 'onOpen' | 'onClose'>
-	}
+  appBar?: {
+    componentProps?: AppBarProps
+    content?: (props?: any) => ReactNode
+  }
+  navMenu: {
+    lockedIcon?: ReactNode
+    unlockedIcon?: ReactNode
+    navItems?: VerticalNavItemsType
+    content?: (props?: any) => ReactNode
+    branding?: (props?: any) => ReactNode
+    afterContent?: (props?: any) => ReactNode
+    beforeContent?: (props?: any) => ReactNode
+    componentProps?: Omit<SwipeableDrawerProps, 'open' | 'onOpen' | 'onClose'>
+  }
 }
 
 export type HorizontalLayoutProps = {
-	appBar?: {
-		componentProps?: AppBarProps
-		content?: (props?: any) => ReactNode
-		branding?: (props?: any) => ReactNode
-	}
-	navMenu?: {
-		sx?: SxProps<Theme>
-		navItems?: HorizontalNavItemsType
-		content?: (props?: any) => ReactNode
-	}
+  appBar?: {
+    componentProps?: AppBarProps
+    content?: (props?: any) => ReactNode
+    branding?: (props?: any) => ReactNode
+  }
+  navMenu?: {
+    sx?: SxProps<Theme>
+    navItems?: HorizontalNavItemsType
+    content?: (props?: any) => ReactNode
+  }
 }
 
 export type LayoutProps = {
-	hidden: boolean
-	settings: Settings
-	children: ReactNode
-	footerProps?: FooterProps
-	contentHeightFixed?: boolean
-	scrollToTop?: (props?: any) => ReactNode
-	saveSettings: (values: Settings) => void
-	verticalLayoutProps: VerticalLayoutProps
-	horizontalLayoutProps?: HorizontalLayoutProps
+  hidden: boolean
+  settings: Settings
+  children: ReactNode
+  footerProps?: FooterProps
+  contentHeightFixed?: boolean
+  scrollToTop?: (props?: any) => ReactNode
+  saveSettings: (values: Settings) => void
+  verticalLayoutProps: VerticalLayoutProps
+  horizontalLayoutProps?: HorizontalLayoutProps
 }

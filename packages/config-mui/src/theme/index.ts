@@ -1,4 +1,4 @@
-import { Mode, Skin, ThemeColor } from '../types';
+import { Mode, Skin, ThemeColor } from '../types'
 // ** MUI Theme Provider
 import { deepmerge } from '@mui/utils'
 import { PaletteMode, ThemeOptions } from '@mui/material'
@@ -23,8 +23,7 @@ export const themeOption = (themeProps: themeProps, overrideMode: PaletteMode): 
 
   // ** Create New object before removing user component overrides and typography objects from userThemeOptions
 
-  const themedConfig: ThemeOptions =
-  {
+  const themedConfig: ThemeOptions = {
     breakpoints: breakpoints(),
     components: overrides(themeProps),
     palette: palette(mode === 'semi-dark' ? overrideMode : mode, skin),
@@ -51,4 +50,3 @@ export const themeOption = (themeProps: themeProps, overrideMode: PaletteMode): 
     }
   })
 }
-

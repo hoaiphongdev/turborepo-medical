@@ -16,6 +16,9 @@
     "tsc": "tsc -p tsconfig.json",
     "update-dependencies": "npx npm-check-updates -u"
   },
+  "dependencies": {
+    "core": "*"
+  },
   "devDependencies": {
     "config-eslint": "*",
     "config-tsconfig": "*"

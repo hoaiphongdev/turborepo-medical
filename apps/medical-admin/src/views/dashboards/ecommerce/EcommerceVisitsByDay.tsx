@@ -18,7 +18,7 @@ import OptionsMenu from '@core/components/option-menu'
 import ReactApexcharts from '@core/components/react-apexcharts'
 
 // ** Util Import
-import { hexToRGBA } from 'config-mui'
+import { hexToRGBA } from 'core'
 
 const EcommerceVisitsByDay = () => {
   // ** Hook

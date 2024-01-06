@@ -37,7 +37,7 @@ import Translations from 'layouts/components/Translations'
 import CanViewNavGroup from 'layouts/components/acl/CanViewNavGroup'
 
 // ** Utils
-import { hexToRGBA } from 'config-mui'
+import { hexToRGBA } from 'core'
 import { hasActiveChild } from '@core/layouts/utils'
 
 interface Props {

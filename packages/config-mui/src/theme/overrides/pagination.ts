@@ -2,7 +2,7 @@
 import { OwnerStateThemeType } from './'
 
 // ** Util Import
-import { hexToRGBA } from 'utils'
+import { hexToRGBA } from 'core'
 
 const Pagination = () => {
   return {

@@ -8,7 +8,7 @@ import Box, { BoxProps } from '@mui/material/Box'
 import Icon from '@core/components/icon'
 
 // ** Util Import
-import { hexToRGBA } from 'config-mui'
+import { hexToRGBA } from 'core'
 
 // ** Custom Components Imports
 import CustomChip from '@core/components/mui/chip'

@@ -24,7 +24,6 @@ import MuiAutocomplete, { AutocompleteRenderInputParams } from '@mui/material/Au
 import axios from 'axios'
 
 // ** Types Imports
-import { AppBarSearchType } from '@fake-db/types'
 import { Settings } from '@core/context/settingsContext'
 
 // ** Icon Imports
@@ -165,6 +164,14 @@ const categoryTitle: { [k: string]: string } = {
   userInterface: 'User Interface',
   formsTables: 'Forms & Tables',
   chartsMisc: 'Charts & Misc'
+}
+
+export type AppBarSearchType = {
+  id: number
+  url: string
+  icon: string
+  title: string
+  category: string
 }
 
 // ** Styled Autocomplete component
