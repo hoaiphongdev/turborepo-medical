@@ -92,6 +92,7 @@ export type HorizontalLayoutProps = {
     content?: (props?: any) => ReactNode
   }
 }
+export type ThemeColor = 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success'
 
 export type LayoutProps = {
   hidden: boolean

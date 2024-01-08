@@ -17,7 +17,7 @@ import type { EmotionCache } from '@emotion/cache'
 
 // ** Config Imports
 import 'configs/i18n'
-import { defaultACLObj } from 'configs/acl'
+// import { defaultACLObj } from 'configs/acl'
 import themeConfig from 'configs/themeConfig'
 
 // ** Third Party Import
@@ -25,13 +25,12 @@ import { Toaster } from 'react-hot-toast'
 
 // ** Component Imports
 import UserLayout from 'layouts/UserLayout'
-import AclGuard from '@core/components/auth/AclGuard'
 import ThemeComponent from '@core/theme/ThemeComponent'
-import AuthGuard from '@core/components/auth/AuthGuard'
-import GuestGuard from '@core/components/auth/GuestGuard'
+// import AuthGuard from '@core/components/auth/AuthGuard'
+// import GuestGuard from '@core/components/auth/GuestGuard'
 
 // ** Spinner Import
-import Spinner from '@core/components/spinner'
+// import Spinner from '@core/components/spinner'
 
 // ** Contexts
 import { AuthProvider } from 'context/AuthContext'
@@ -110,11 +109,11 @@ type ExtendedAppProps = AppProps & {
   emotionCache: EmotionCache
 }
 
-type GuardProps = {
-  authGuard: boolean
-  guestGuard: boolean
-  children: ReactNode
-}
+// type GuardProps = {
+//   authGuard: boolean
+//   guestGuard: boolean
+//   children: ReactNode
+// }
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -131,15 +130,15 @@ if (themeConfig.routingLoader) {
   })
 }
 
-const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
-  if (guestGuard) {
-    return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>
-  } else if (!guestGuard && !authGuard) {
-    return <>{children}</>
-  } else {
-    return <AuthGuard fallback={<Spinner />}>{children}</AuthGuard>
-  }
-}
+// const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
+//   if (guestGuard) {
+//     return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>
+//   } else if (!guestGuard && !authGuard) {
+//     return <>{children}</>
+//   } else {
+//     return <AuthGuard fallback={<Spinner />}>{children}</AuthGuard>
+//   }
+// }
 
 const App = (props: ExtendedAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
@@ -166,11 +165,11 @@ const App = (props: ExtendedAppProps) => {
 
   const setConfig = Component.setConfig ?? undefined
 
-  const authGuard = Component.authGuard ?? true
+  // const authGuard = Component.authGuard ?? true
 
-  const guestGuard = Component.guestGuard ?? false
+  // const guestGuard = Component.guestGuard ?? false
 
-  const aclAbilities = Component.acl ?? defaultACLObj
+  // const aclAbilities = Component.acl ?? defaultACLObj
   return (
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
@@ -185,11 +184,13 @@ const App = (props: ExtendedAppProps) => {
                 {({ settings }) => {
                   return (
                     <ThemeComponent settings={settings}>
-                      <Guard authGuard={authGuard} guestGuard={guestGuard}>
+                      {getLayout(<Component {...pageProps} />)}
+
+                      {/* <Guard authGuard={authGuard} guestGuard={guestGuard}>
                         <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard} authGuard={authGuard}>
-                          {getLayout(<Component {...pageProps} />)}
+
                         </AclGuard>
-                      </Guard>
+                      </Guard> */}
                       <ReactHotToast>
                         <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
                       </ReactHotToast>
