@@ -24,7 +24,6 @@ import { Settings } from '@core/context/settingsContext'
 // ** Custom Components Imports
 import UserIcon from 'layouts/components/UserIcon'
 import Translations from 'layouts/components/Translations'
-import CanViewNavLink from 'layouts/components/acl/CanViewNavLink'
 
 // ** Util Import
 import { handleURLQueries } from '@core/layouts/utils'
@@ -103,7 +102,7 @@ const VerticalNavLink = ({
   }
 
   return (
-    <CanViewNavLink navLink={item}>
+    <>
       <ListItem
         disablePadding
         className="nav-link"
@@ -177,7 +176,7 @@ const VerticalNavLink = ({
           </MenuItemTextMetaWrapper>
         </MenuNavLink>
       </ListItem>
-    </CanViewNavLink>
+    </>
   )
 }
 
