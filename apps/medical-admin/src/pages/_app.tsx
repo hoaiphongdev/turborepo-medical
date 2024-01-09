@@ -17,7 +17,7 @@ import type { EmotionCache } from '@emotion/cache'
 
 // ** Config Imports
 import 'configs/i18n'
-import { defaultACLObj } from 'configs/acl'
+// import { defaultACLObj } from 'configs/acl'
 import themeConfig from 'configs/themeConfig'
 
 // ** Third Party Import
@@ -25,7 +25,6 @@ import { Toaster } from 'react-hot-toast'
 
 // ** Component Imports
 import UserLayout from 'layouts/UserLayout'
-import AclGuard from '@core/components/auth/AclGuard'
 import ThemeComponent from '@core/theme/ThemeComponent'
 import AuthGuard from '@core/components/auth/AuthGuard'
 import GuestGuard from '@core/components/auth/GuestGuard'
@@ -83,12 +82,13 @@ axios.interceptors.response.use(
     return res
   },
   async (err) => {
-    const originalConfig = err.config
+    console.log('ERROR AXIOS', err)
 
     if (err.response) {
-      if (unauthorizedCode.includes(err.response.status as number) && !originalConfig._retry) {
-        originalConfig._retry = true
-        Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+      if (unauthorizedCode.includes(err.response.status as number)) {
+        // originalConfig._retry = true
+        // Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+        // localStorage.removeItem('userData')
         return Promise.reject(err.response.data)
       }
 
@@ -170,7 +170,7 @@ const App = (props: ExtendedAppProps) => {
 
   const guestGuard = Component.guestGuard ?? false
 
-  const aclAbilities = Component.acl ?? defaultACLObj
+  // const aclAbilities = Component.acl ?? defaultACLObj
   return (
     <Provider store={store}>
       <CacheProvider value={emotionCache}>
@@ -186,9 +186,7 @@ const App = (props: ExtendedAppProps) => {
                   return (
                     <ThemeComponent settings={settings}>
                       <Guard authGuard={authGuard} guestGuard={guestGuard}>
-                        <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard} authGuard={authGuard}>
-                          {getLayout(<Component {...pageProps} />)}
-                        </AclGuard>
+                        {getLayout(<Component {...pageProps} />)}
                       </Guard>
                       <ReactHotToast>
                         <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />

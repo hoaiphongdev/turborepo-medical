@@ -20,7 +20,11 @@ import EcommerceMarketingSales from 'views/dashboards/ecommerce/EcommerceMarketi
 import EcommerceActivityTimeline from 'views/dashboards/ecommerce/EcommerceActivityTimeline'
 import EcommerceImpressionsOrders from 'views/dashboards/ecommerce/EcommerceImpressionsOrders'
 import EcommerceSalesOverviewWithTabs from 'views/dashboards/ecommerce/EcommerceSalesOverviewWithTabs'
+import { useAuth } from 'hooks/useAuth'
 const EcommerceDashboard = () => {
+  const { user } = useAuth()
+  console.log('user', user)
+
   return (
     <ApexChartWrapper>
       <KeenSliderWrapper>
@@ -89,6 +93,4 @@ const EcommerceDashboard = () => {
   )
 }
 
-EcommerceDashboard.authGuard = false
-EcommerceDashboard.guestGuard = true
 export default EcommerceDashboard

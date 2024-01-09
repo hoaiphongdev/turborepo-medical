@@ -8,11 +8,11 @@ export type LoginParams = {
 
 export type UserDataType = {
   id: number
-  role: string
+  roles: Array<string>
   email: string
-  fullName: string
-  username: string
-  password: string
+  firstName?: string
+  lastName?: string
+  dateOfBirth?: string
   avatar?: string | null
 }
 
