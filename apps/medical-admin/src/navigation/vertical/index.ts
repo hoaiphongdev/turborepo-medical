@@ -10,8 +10,17 @@ const navigation = (): VerticalNavItemsType => {
     },
     {
       title: 'Categories',
-      path: '/categories',
-      icon: 'mdi:note-text-outline'
+      icon: 'mdi:note-text-outline',
+      children: [
+        {
+          title: 'List',
+          path: '/categories'
+        },
+        {
+          title: 'Create',
+          path: '/categories/create'
+        }
+      ]
     },
     {
       title: 'Product',
