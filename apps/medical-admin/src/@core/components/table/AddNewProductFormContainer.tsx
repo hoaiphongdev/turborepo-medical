@@ -50,6 +50,11 @@ const AddNewProductFormContainer = () => {
     name: yup.string().required('Không được bỏ trống tên sản phẩm'),
     skuProduct: yup.string().required('Không được bỏ trống mã SKU'),
     category: yup.string().required('Không được bỏ trống danh mục sản phẩm'),
+    quantity: yup
+      .number()
+      .required('Không được bỏ trống số lượng sản phẩm')
+      .min(1, 'Số lượng thấp nhất là 1')
+      .typeError('Không được bỏ trống số lượng sản phẩm'),
     price: yup
       .number()
       .required('Không được bỏ trống giá sản phẩm')
@@ -232,6 +237,30 @@ const AddNewProductFormContainer = () => {
               {errors.skuProduct && (
                 <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-skuProduct">
                   {errors.skuProduct.message}
+                </FormHelperText>
+              )}
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl fullWidth>
+              <Controller
+                name="quantity"
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value, onChange } }) => (
+                  <TextField
+                    value={value}
+                    label="Số lượng sản phẩm"
+                    onChange={onChange}
+                    placeholder="1200"
+                    error={Boolean(errors.quantity)}
+                    aria-describedby="validation-schema-quantity"
+                  />
+                )}
+              />
+              {errors.quantity && (
+                <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-quantity">
+                  {errors.quantity.message}
                 </FormHelperText>
               )}
             </FormControl>
