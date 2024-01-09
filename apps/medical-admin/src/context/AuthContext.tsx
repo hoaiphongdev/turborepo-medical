@@ -13,7 +13,8 @@ import authConfig from 'configs/auth'
 // ** Types
 import { AuthValuesType, LoginParams, ErrCallbackType, UserDataType } from './types'
 import Cookies from 'js-cookie'
-import { ACCESS_TOKEN_KEY } from 'core'
+import { ACCESS_TOKEN_KEY, TOKEN_TYPE } from 'core'
+import { api } from 'configs/api.endpoint'
 
 // ** Defaults
 const defaultProvider: AuthValuesType = {
@@ -38,28 +39,30 @@ const AuthProvider = ({ children }: Props) => {
 
   // ** Hooks
   const router = useRouter()
+  console.log('user', user)
 
   useEffect(() => {
+    console.log('RUN')
+
     const initAuth = async (): Promise<void> => {
-      // const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
-      const storedToken = Cookies.get(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)!
+      const storedToken = Cookies.get(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
       if (storedToken) {
         setLoading(true)
         await axios
-          .get(authConfig.meEndpoint, {
+          .post(`${api.AUTH}/me`, {
             headers: {
               Authorization: storedToken
             }
           })
           .then(async (response) => {
             setLoading(false)
-            setUser({ ...response.data.userData })
+            const userdata = { id: response.data.data._id, ...response.data.data }
+            localStorage.setItem('userData', JSON.stringify(userdata))
+            setUser(userdata)
           })
           .catch(() => {
             Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
-            // localStorage.removeItem('userData')
-            // localStorage.removeItem('refreshToken')
-            // localStorage.removeItem('accessToken')
+            localStorage.removeItem('userData')
             setUser(null)
             setLoading(false)
             if (authConfig.onTokenExpiration === 'logout' && !router.pathname.includes('login')) {
@@ -77,16 +80,40 @@ const AuthProvider = ({ children }: Props) => {
 
   const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
     axios
-      .post(authConfig.loginEndpoint, params)
+      .post(`${api.AUTH}/login`, params)
       .then(async (response) => {
-        Cookies.set(ACCESS_TOKEN_KEY.MEDICAL_ADMIN, response.data.accessToken)
+        const token = response.data.data.accessToken
+        Cookies.set(ACCESS_TOKEN_KEY.MEDICAL_ADMIN, response.data.data.accessToken)
+
+        // LOGIN
+        await axios
+          .post(`${api.AUTH}/me`, null, {
+            headers: {
+              Authorization: `${TOKEN_TYPE}${token}`
+            }
+          })
+          .then(async (response) => {
+            setLoading(false)
+            const userdata = { id: response.data.data._id, ...response.data.data }
+            localStorage.setItem('userData', JSON.stringify(userdata))
+            setUser(userdata)
+          })
+          .catch(() => {
+            Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+            localStorage.removeItem('userData')
+            setUser(null)
+            setLoading(false)
+            if (authConfig.onTokenExpiration === 'logout' && !router.pathname.includes('login')) {
+              router.replace('/login')
+            }
+          })
+        // LOGIN
+
         // params.rememberMe
         //   ? window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.accessToken)
         //   : null
         const returnUrl = router.query.returnUrl
-
-        setUser({ ...response.data.userData })
-        // params.rememberMe ? window.localStorage.setItem('userData', JSON.stringify(response.data.userData)) : null
+        // // params.rememberMe ? window.localStorage.setItem('userData', JSON.stringify(response.data.userData)) : null
 
         const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
 
@@ -100,10 +127,9 @@ const AuthProvider = ({ children }: Props) => {
 
   const handleLogout = () => {
     setUser(null)
+    localStorage.removeItem('userData')
     Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
-    // window.localStorage.removeItem('userData')
-    // window.localStorage.removeItem(authConfig.storageTokenKeyName)
-    router.push('/login')
+    router.replace('/login')
   }
 
   const values = {

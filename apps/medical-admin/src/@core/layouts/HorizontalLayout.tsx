@@ -15,7 +15,6 @@ import themeConfig from 'configs/themeConfig'
 import { LayoutProps } from '@core/layouts/types'
 
 // ** Components
-import Customizer from '@core/components/customizer'
 import Footer from './components/shared-components/footer'
 import Navigation from './components/horizontal/navigation'
 import ScrollToTop from '@core/components/scroll-to-top'
@@ -183,9 +182,6 @@ const HorizontalLayout = (props: LayoutProps) => {
 
         {/* Footer */}
         <Footer {...props} footerStyles={footerProps?.sx} footerContent={footerProps?.content} />
-
-        {/* Customizer */}
-        {themeConfig.disableCustomizer || hidden ? null : <Customizer />}
 
         {/* Scroll to top button */}
         {scrollToTop ? (

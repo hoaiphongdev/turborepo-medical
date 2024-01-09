@@ -6,6 +6,9 @@ import { useRouter } from 'next/router'
 
 // ** Hooks Import
 import { useAuth } from 'hooks/useAuth'
+import Cookies from 'js-cookie'
+import { ACCESS_TOKEN_KEY } from 'core'
+import { isEmpty } from 'lodash'
 
 interface AuthGuardProps {
   children: ReactNode
@@ -17,13 +20,15 @@ const AuthGuard = (props: AuthGuardProps) => {
   const auth = useAuth()
   const router = useRouter()
 
+  const token = Cookies.get(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+
   useEffect(
     () => {
       if (!router.isReady) {
         return
       }
 
-      if (auth.user === null && !window.localStorage.getItem('userData')) {
+      if (isEmpty(token)) {
         if (router.asPath !== '/') {
           router.replace({
             pathname: '/login',

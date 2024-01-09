@@ -13,6 +13,8 @@ import Divider from '@mui/material/Divider'
 import MenuItem from '@mui/material/MenuItem'
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
+// ** Custom Components Imports
+import CustomAvatar from '@core/components/mui/avatar'
 
 // ** Icon Imports
 import Icon from '@core/components/icon'
@@ -22,6 +24,7 @@ import { useAuth } from 'hooks/useAuth'
 
 // ** Type Imports
 import { Settings } from '@core/context/settingsContext'
+import { isEmpty } from 'lodash'
 
 interface Props {
   settings: Settings
@@ -42,6 +45,7 @@ const UserDropdown = (props: Props) => {
 
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
+  const { user } = useAuth()
 
   // ** Hooks
   const router = useRouter()
@@ -93,12 +97,18 @@ const UserDropdown = (props: Props) => {
           horizontal: 'right'
         }}
       >
-        <Avatar
-          alt="John Doe"
-          onClick={handleDropdownOpen}
-          sx={{ width: 40, height: 40 }}
-          src="/images/avatars/1.png"
-        />
+        {isEmpty(user?.avatar) ? (
+          <CustomAvatar skin="light" color="error" onClick={handleDropdownOpen}>
+            {user?.firstName?.slice(0, 2).toUpperCase()}
+          </CustomAvatar>
+        ) : (
+          <Avatar
+            alt={user?.firstName}
+            onClick={handleDropdownOpen}
+            sx={{ width: 40, height: 40 }}
+            src={user?.avatar as string}
+          />
+        )}
       </Badge>
       <Menu
         anchorEl={anchorEl}
@@ -118,52 +128,27 @@ const UserDropdown = (props: Props) => {
                 horizontal: 'right'
               }}
             >
-              <Avatar alt="John Doe" src="/images/avatars/1.png" sx={{ width: '2.5rem', height: '2.5rem' }} />
+              {isEmpty(user?.avatar) ? (
+                <CustomAvatar skin="light" color="error" sx={{ width: '2.5rem', height: '2.5rem' }}>
+                  {user?.firstName?.slice(0, 2).toUpperCase()}
+                </CustomAvatar>
+              ) : (
+                <Avatar alt={user?.email} src={user?.avatar as string} sx={{ width: '2.5rem', height: '2.5rem' }} />
+              )}
             </Badge>
             <Box sx={{ display: 'flex', ml: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{user?.firstName}</Typography>
               <Typography variant="body2" sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
-                Admin
+                {user?.email}
               </Typography>
             </Box>
           </Box>
         </Box>
         <Divider sx={{ mt: '0 !important' }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/user-profile/profile')}>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/account-setting')}>
           <Box sx={styles}>
             <Icon icon="mdi:account-outline" />
-            Profile
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/apps/email')}>
-          <Box sx={styles}>
-            <Icon icon="mdi:email-outline" />
-            Inbox
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/apps/chat')}>
-          <Box sx={styles}>
-            <Icon icon="mdi:message-outline" />
-            Chat
-          </Box>
-        </MenuItem>
-        <Divider />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/account-settings/account')}>
-          <Box sx={styles}>
-            <Icon icon="mdi:cog-outline" />
-            Settings
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/pricing')}>
-          <Box sx={styles}>
-            <Icon icon="mdi:currency-usd" />
-            Pricing
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/faq')}>
-          <Box sx={styles}>
-            <Icon icon="mdi:help-circle-outline" />
-            FAQ
+            Cài đặt
           </Box>
         </MenuItem>
         <Divider />
@@ -172,7 +157,7 @@ const UserDropdown = (props: Props) => {
           sx={{ py: 2, '& svg': { mr: 2, fontSize: '1.375rem', color: 'text.primary' } }}
         >
           <Icon icon="mdi:logout-variant" />
-          Logout
+          Đăng xuất
         </MenuItem>
       </Menu>
     </Fragment>

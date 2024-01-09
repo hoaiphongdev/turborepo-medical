@@ -9,11 +9,6 @@ const navigation = (): VerticalNavItemsType => {
       icon: 'mdi:home-outline'
     },
     {
-      title: 'User',
-      path: '/user',
-      icon: 'mdi:account-cog-outline'
-    },
-    {
       title: 'Categories',
       path: '/categories',
       icon: 'mdi:note-text-outline'
@@ -23,19 +18,28 @@ const navigation = (): VerticalNavItemsType => {
       icon: 'mdi:format-list-group',
       children: [
         {
-          title: 'Product List',
+          title: 'List',
           path: '/products'
         },
         {
-          title: 'New Product',
+          title: 'Create',
           path: '/products/new-product'
         }
       ]
     },
     {
-      title: 'Order',
-      path: '/orders',
-      icon: 'mdi:cart-outline'
+      title: 'Invoice',
+      icon: 'mdi:invoice-text-edit-outline',
+      children: [
+        {
+          title: 'List',
+          path: '/invoice'
+        },
+        {
+          title: 'Create',
+          path: '/invoice-create'
+        }
+      ]
     }
   ]
 }

@@ -26,11 +26,11 @@ import { Toaster } from 'react-hot-toast'
 // ** Component Imports
 import UserLayout from 'layouts/UserLayout'
 import ThemeComponent from '@core/theme/ThemeComponent'
-// import AuthGuard from '@core/components/auth/AuthGuard'
-// import GuestGuard from '@core/components/auth/GuestGuard'
+import AuthGuard from '@core/components/auth/AuthGuard'
+import GuestGuard from '@core/components/auth/GuestGuard'
 
 // ** Spinner Import
-// import Spinner from '@core/components/spinner'
+import Spinner from '@core/components/spinner'
 
 // ** Contexts
 import { AuthProvider } from 'context/AuthContext'
@@ -82,12 +82,13 @@ axios.interceptors.response.use(
     return res
   },
   async (err) => {
-    const originalConfig = err.config
+    console.log('ERROR AXIOS', err)
 
     if (err.response) {
-      if (unauthorizedCode.includes(err.response.status as number) && !originalConfig._retry) {
-        originalConfig._retry = true
-        Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+      if (unauthorizedCode.includes(err.response.status as number)) {
+        // originalConfig._retry = true
+        // Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+        // localStorage.removeItem('userData')
         return Promise.reject(err.response.data)
       }
 
@@ -109,11 +110,11 @@ type ExtendedAppProps = AppProps & {
   emotionCache: EmotionCache
 }
 
-// type GuardProps = {
-//   authGuard: boolean
-//   guestGuard: boolean
-//   children: ReactNode
-// }
+type GuardProps = {
+  authGuard: boolean
+  guestGuard: boolean
+  children: ReactNode
+}
 
 const clientSideEmotionCache = createEmotionCache()
 
@@ -130,15 +131,15 @@ if (themeConfig.routingLoader) {
   })
 }
 
-// const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
-//   if (guestGuard) {
-//     return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>
-//   } else if (!guestGuard && !authGuard) {
-//     return <>{children}</>
-//   } else {
-//     return <AuthGuard fallback={<Spinner />}>{children}</AuthGuard>
-//   }
-// }
+const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
+  if (guestGuard) {
+    return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>
+  } else if (!guestGuard && !authGuard) {
+    return <>{children}</>
+  } else {
+    return <AuthGuard fallback={<Spinner />}>{children}</AuthGuard>
+  }
+}
 
 const App = (props: ExtendedAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
@@ -165,9 +166,9 @@ const App = (props: ExtendedAppProps) => {
 
   const setConfig = Component.setConfig ?? undefined
 
-  // const authGuard = Component.authGuard ?? true
+  const authGuard = Component.authGuard ?? true
 
-  // const guestGuard = Component.guestGuard ?? false
+  const guestGuard = Component.guestGuard ?? false
 
   // const aclAbilities = Component.acl ?? defaultACLObj
   return (
@@ -184,13 +185,9 @@ const App = (props: ExtendedAppProps) => {
                 {({ settings }) => {
                   return (
                     <ThemeComponent settings={settings}>
-                      {getLayout(<Component {...pageProps} />)}
-
-                      {/* <Guard authGuard={authGuard} guestGuard={guestGuard}>
-                        <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard} authGuard={authGuard}>
-
-                        </AclGuard>
-                      </Guard> */}
+                      <Guard authGuard={authGuard} guestGuard={guestGuard}>
+                        {getLayout(<Component {...pageProps} />)}
+                      </Guard>
                       <ReactHotToast>
                         <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
                       </ReactHotToast>
