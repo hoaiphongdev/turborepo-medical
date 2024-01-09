@@ -8,7 +8,6 @@ import Link from 'next/link'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Divider from '@mui/material/Divider'
-import Tooltip from '@mui/material/Tooltip'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import { styled, Theme } from '@mui/material/styles'
@@ -117,11 +116,6 @@ const ShortcutsDropdown = (props: Props) => {
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
             <Typography sx={{ fontSize: '1.125rem', color: 'text.secondary', fontWeight: 600 }}>Shortcuts</Typography>
-            <Tooltip title="Add Shortcut" placement="top">
-              <IconButton disableRipple>
-                <Icon icon="mdi:plus-circle-outline" />
-              </IconButton>
-            </Tooltip>
           </Box>
         </MenuItem>
         <Divider sx={{ my: '0 !important' }} />
