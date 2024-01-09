@@ -23,7 +23,6 @@ import EcommerceSalesOverviewWithTabs from 'views/dashboards/ecommerce/Ecommerce
 import { useAuth } from 'hooks/useAuth'
 const EcommerceDashboard = () => {
   const { user } = useAuth()
-  console.log('user', user)
 
   return (
     <ApexChartWrapper>

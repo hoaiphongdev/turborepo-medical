@@ -39,11 +39,8 @@ const AuthProvider = ({ children }: Props) => {
 
   // ** Hooks
   const router = useRouter()
-  console.log('user', user)
 
   useEffect(() => {
-    console.log('RUN')
-
     const initAuth = async (): Promise<void> => {
       const storedToken = Cookies.get(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
       if (storedToken) {
