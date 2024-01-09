@@ -53,7 +53,7 @@ const AuthProvider = ({ children }: Props) => {
           })
           .then(async (response) => {
             setLoading(false)
-            setUser({ ...response.data.userData })
+            setUser({ id: response.data.userData._id, ...response.data.userData })
           })
           .catch(() => {
             Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
@@ -85,7 +85,7 @@ const AuthProvider = ({ children }: Props) => {
         //   : null
         const returnUrl = router.query.returnUrl
 
-        setUser({ ...response.data.userData })
+        setUser({ id: response.data.userData._id, ...response.data.userData })
         // params.rememberMe ? window.localStorage.setItem('userData', JSON.stringify(response.data.userData)) : null
 
         const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
@@ -101,7 +101,7 @@ const AuthProvider = ({ children }: Props) => {
   const handleLogout = () => {
     setUser(null)
     Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
-    // window.localStorage.removeItem('userData')
+    localStorage.removeItem('userData')
     // window.localStorage.removeItem(authConfig.storageTokenKeyName)
     router.push('/login')
   }

@@ -60,9 +60,6 @@ const UserLayout = ({ children, contentHeightFixed }: Props) => {
       verticalLayoutProps={{
         navMenu: {
           navItems: VerticalNavItems()
-
-          // Uncomment the below line when using server-side menu in vertical layout and comment the above line
-          // navItems: verticalMenuItems
         },
         appBar: {
           content: (props) => (
@@ -79,9 +76,6 @@ const UserLayout = ({ children, contentHeightFixed }: Props) => {
         horizontalLayoutProps: {
           navMenu: {
             navItems: HorizontalNavItems()
-
-            // Uncomment the below line when using server-side menu in horizontal layout and comment the above line
-            // navItems: horizontalMenuItems
           },
           appBar: {
             content: () => <HorizontalAppBarContent hidden={hidden} settings={settings} saveSettings={saveSettings} />
