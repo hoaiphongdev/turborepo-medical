@@ -27,7 +27,8 @@ const EditCategoryPage = () => {
   })
 
   useEffect(() => {
-    if (!isRefetching) refetch()
+    refetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId])
 
   if (isLoading || isRefetching) return <Typography variant="body1">Loading</Typography>

@@ -1,15 +1,4 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  Grid,
-  TextField,
-  Typography,
-  styled
-} from '@mui/material'
+import { Box, FormControl, FormHelperText, Grid, TextField, Typography, styled } from '@mui/material'
 
 import Button, { ButtonProps } from '@mui/material/Button'
 
@@ -18,10 +7,8 @@ import React, { useState, ElementType, ChangeEvent } from 'react'
 import * as yup from 'yup'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import dynamic from 'next/dynamic'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import 'draft-js/dist/Draft.css'
-import { useDropzone } from 'react-dropzone'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import { api } from 'configs/api.endpoint'

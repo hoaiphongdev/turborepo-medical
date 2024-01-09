@@ -20,10 +20,7 @@ import EcommerceMarketingSales from 'views/dashboards/ecommerce/EcommerceMarketi
 import EcommerceActivityTimeline from 'views/dashboards/ecommerce/EcommerceActivityTimeline'
 import EcommerceImpressionsOrders from 'views/dashboards/ecommerce/EcommerceImpressionsOrders'
 import EcommerceSalesOverviewWithTabs from 'views/dashboards/ecommerce/EcommerceSalesOverviewWithTabs'
-import { useAuth } from 'hooks/useAuth'
 const EcommerceDashboard = () => {
-  const { user } = useAuth()
-
   return (
     <ApexChartWrapper>
       <KeenSliderWrapper>
@@ -34,6 +31,7 @@ const EcommerceDashboard = () => {
           <Grid item xs={12} sm={6} md={3}>
             <CardStatisticsCharacter
               data={{
+                id: '1221',
                 stats: '8.14k',
                 title: 'Ratings',
                 chipColor: 'primary',
@@ -46,6 +44,7 @@ const EcommerceDashboard = () => {
           <Grid item xs={12} sm={6} md={3}>
             <CardStatisticsCharacter
               data={{
+                id: '122',
                 stats: '12.2k',
                 trend: 'negative',
                 title: 'Sessions',

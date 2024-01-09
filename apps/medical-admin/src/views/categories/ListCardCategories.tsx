@@ -1,6 +1,3 @@
-// ** Next Imports
-import { InferGetStaticPropsType } from 'next/types'
-
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 
@@ -12,7 +9,7 @@ import { CardStatsCharacterProps } from '@core/components/card-statistics/types'
 import CardStatisticsCharacter from '@core/components/card-statistics/card-stats-with-image'
 
 export type CartStats = {
-    id: string
+  id: string
 } & CardStatsCharacterProps
 
 type ListCardCategoriesProps = {

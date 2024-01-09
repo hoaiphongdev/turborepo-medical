@@ -4,12 +4,10 @@ import axios from 'axios'
 import { api } from 'configs/api.endpoint'
 import dayjs from 'dayjs'
 import { isEmpty } from 'lodash'
-import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import ListCardCategories, { CartStats } from 'views/categories/ListCardCategories'
 
 const CategoriesPage = () => {
-  const router = useRouter()
   const { isLoading, isRefetching, data, refetch } = useQuery({
     queryKey: ['get-categories'],
     queryFn: async () => {
@@ -32,7 +30,8 @@ const CategoriesPage = () => {
   })
 
   useEffect(() => {
-    if (!isRefetching) refetch()
+    refetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (isLoading || isRefetching) return <Typography variant="body1">Loading</Typography>
