@@ -1,6 +1,3 @@
-// ** Next Imports
-import { GetStaticProps } from 'next/types'
-
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
 
@@ -8,8 +5,6 @@ import Grid from '@mui/material/Grid'
 import AddCard from 'views/invoice/add/AddCard'
 import AddActions from 'views/invoice/add/AddActions'
 
-// ** Styled Component
-import DatePickerWrapper from '@core/styles/libs/react-datepicker'
 import { Box } from '@mui/material'
 
 // ** Third Party Imports
@@ -22,10 +17,11 @@ import dayjs from 'dayjs'
 import axios from 'axios'
 import { api } from 'configs/api.endpoint'
 import { useRouter } from 'next/router'
+import { isEmpty } from 'lodash'
 
 export interface FormData {
-  dateIssues: string
-  paidAt: string
+  dateIssues: any
+  paidAt: any
   customerNote?: string
   taxInclude: boolean
   paymentMethod: string
@@ -35,13 +31,33 @@ export const calculatorPrice = (items: Array<any>) => {
   return items.reduce((acc, curr) => acc + curr.price * curr.quantity, 0)
 }
 
-const InvoiceAddPage = () => {
-  // ** State
+type FormEditInvoiceType = {
+  invoiceData: any
+}
 
-  const [invoiceItems, setInvoiceItems] = useState<Array<any>>([])
-  const [clientData, setClientData] = useState<any | null>(null)
-  const [isProcessing, setIsProcessing] = useState<boolean>(false)
+const FormEditInvoice = ({ invoiceData }: FormEditInvoiceType) => {
   const router = useRouter()
+  const [invoiceItems, setInvoiceItems] = useState<Array<any>>(
+    invoiceData?.invoiceItems?.map((item: any) => {
+      return {
+        id: crypto.randomUUID(),
+        productId: '',
+        ...item
+      }
+    })
+  )
+
+  const [clientData, setClientData] = useState<any | null>({
+    _id: '',
+    name: invoiceData?.customerInformation?.name,
+    email: invoiceData?.customerInformation?.email,
+    avatar: invoiceData?.customerInformation?.avatar,
+    phone: invoiceData?.shippingAddress?.phone,
+    taxNumber: invoiceData?.vatNumber,
+    vatNumber: invoiceData?.vatNumber,
+    shippingAddress: invoiceData?.shippingAddress
+  })
+  const [isProcessing, setIsProcessing] = useState<boolean>(false)
 
   const schema = yup.object().shape({
     dateIssues: yup.string().required('Ngày phát hành không được bỏ trống'),
@@ -58,9 +74,15 @@ const InvoiceAddPage = () => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      customerNote: 'Thank for your bussiness 💘',
-      taxInclude: true,
-      paymentMethod: 'bank_transfer'
+      dateIssues: dayjs(invoiceData?.dateIssues)
+        .toDate()
+        .toString(),
+      paidAt: dayjs(invoiceData?.paidAt)
+        .toDate()
+        .toString(),
+      customerNote: isEmpty(invoiceData?.customerNote) ? 'Thank for your bussiness 💘' : invoiceData?.customerNote,
+      taxInclude: invoiceData?.priceType === 'tax_inclusive',
+      paymentMethod: invoiceData?.paymentMethod
     },
     mode: 'onChange',
     resolver: yupResolver(schema)
@@ -86,13 +108,13 @@ const InvoiceAddPage = () => {
       salePerson: 'Medical',
       customerNode: data.customerNote,
       status: 'payment_due',
-      vatNumber: '',
+      vatNumber: clientData?.taxNumber,
       priceType: data?.taxInclude ? 'tax_inclusive' : 'tax_exclusive',
       dateIssues: dayjs(data.dateIssues).format('YYYY-MM-DD'),
       paidOn: dayjs().format('YYYY-MM-DD'),
       paidAt: dayjs(data.paidAt).format('YYYY-MM-DD'),
-      amountPaid: 0, // Số tiền đã thanh toán
-      amountDue: calculatorPrice(invoiceItems), // Số tiền còn lại phải thanh toán
+      amountPaid: calculatorPrice(invoiceItems), // Số tiền đã thanh toán
+      amountDue: 0, // Số tiền còn lại phải thanh toán
       subTotal: calculatorPrice(invoiceItems),
       total: calculatorPrice(invoiceItems),
       tax: 0,
@@ -147,14 +169,14 @@ const InvoiceAddPage = () => {
       }
     }
     try {
-      await axios.post(`${api.INVOICE}`, payload)
+      await axios.put(`${api.INVOICE}/${invoiceData._id}`, payload)
       router.replace('/invoice', undefined, { shallow: false })
-      toast.success('Tạo hóa đơn thành công', {
-        id: 'success-create-iinvoice'
+      toast.success('Điều chỉnh hóa đơn thành công', {
+        id: 'success-edit-invoice'
       })
     } catch (error) {
       toast.error('Server đang bận, vui lòng thử lại sau', {
-        id: 'error-create-invoice'
+        id: 'error-edit-invoice'
       })
     }
 
@@ -244,7 +266,7 @@ const InvoiceAddPage = () => {
       }
     }
     try {
-      const response = await axios.post(`${api.INVOICE}`, payload)
+      const response = await axios.put(`${api.INVOICE}/${invoiceData._id}`, payload)
       router.replace(`/invoice/print/${response?.data?.data?._id}`, undefined, { shallow: false })
     } catch (error) {
       toast.error('Server đang bận, vui lòng thử lại sau', {
@@ -281,8 +303,8 @@ const InvoiceAddPage = () => {
       dateIssues: dayjs(data.dateIssues).format('YYYY-MM-DD'),
       paidOn: dayjs().format('YYYY-MM-DD'),
       paidAt: dayjs(data.paidAt).format('YYYY-MM-DD'),
-      amountPaid: 0, // Số tiền đã thanh toán
-      amountDue: calculatorPrice(invoiceItems), // Số tiền còn lại phải thanh toán
+      amountPaid: calculatorPrice(invoiceItems), // Số tiền đã thanh toán
+      amountDue: 0, // Số tiền còn lại phải thanh toán
       subTotal: calculatorPrice(invoiceItems),
       total: calculatorPrice(invoiceItems),
       tax: 0,
@@ -337,7 +359,7 @@ const InvoiceAddPage = () => {
       }
     }
     try {
-      await axios.post(`${api.INVOICE}`, payload)
+      await axios.put(`${api.INVOICE}/${invoiceData._id}`, payload)
       router.replace('/invoice', undefined, { shallow: false })
       toast.success('Điều chỉnh hóa đơn thành công', {
         id: 'success-edit-invoice'
@@ -352,40 +374,32 @@ const InvoiceAddPage = () => {
   }
 
   return (
-    <DatePickerWrapper sx={{ '& .react-datepicker-wrapper': { width: 'auto' } }}>
-      <form onSubmit={handleSubmit(onSubmit)} id="form-add-invoice">
-        <Grid container spacing={6}>
-          <Grid item xl={9} md={8} xs={12}>
-            <AddCard
-              isProcessing={isProcessing}
-              control={control}
-              errors={errors}
-              invoiceItems={invoiceItems}
-              clientData={clientData}
-              setClientData={setClientData}
-              setInvoiceItems={setInvoiceItems}
-            />
-          </Grid>
-          <Grid item xl={3} md={4} xs={12}>
-            <Box sx={{ position: 'sticky', top: '5rem', height: '500px' }}>
-              <AddActions
-                control={control}
-                isProcessing={isProcessing}
-                handleSaveAndPrintInvoice={handleSaveAndPrintInvoice}
-                handleSaveAndPaidInvoice={handleSaveAndPaidInvoice}
-              />
-            </Box>
-          </Grid>
+    <form onSubmit={handleSubmit(onSubmit)} id="form-action-invoice">
+      <Grid container spacing={6}>
+        <Grid item xl={9} md={8} xs={12}>
+          <AddCard
+            isProcessing={isProcessing}
+            control={control}
+            errors={errors}
+            invoiceItems={invoiceItems}
+            clientData={clientData}
+            setClientData={setClientData}
+            setInvoiceItems={setInvoiceItems}
+          />
         </Grid>
-      </form>
-    </DatePickerWrapper>
+        <Grid item xl={3} md={4} xs={12}>
+          <Box sx={{ position: 'sticky', top: '5rem', height: '500px' }}>
+            <AddActions
+              control={control}
+              isProcessing={isProcessing}
+              handleSaveAndPrintInvoice={handleSaveAndPrintInvoice}
+              handleSaveAndPaidInvoice={handleSaveAndPaidInvoice}
+            />
+          </Box>
+        </Grid>
+      </Grid>
+    </form>
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  return {
-    props: {}
-  }
-}
-
-export default InvoiceAddPage
+export default FormEditInvoice

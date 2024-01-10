@@ -41,6 +41,7 @@ const GlobalStyles = (theme: Theme) => {
 
     '*::-webkit-scrollbar': {
       width: '9px',
+      height: '4px',
       backgroundColor: 'none'
     },
 

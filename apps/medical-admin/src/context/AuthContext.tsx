@@ -12,7 +12,6 @@ import authConfig from 'configs/auth'
 
 // ** Types
 import { AuthValuesType, LoginParams, ErrCallbackType, UserDataType } from './types'
-import Cookies from 'js-cookie'
 import { ACCESS_TOKEN_KEY, TOKEN_TYPE } from 'core'
 import { api } from 'configs/api.endpoint'
 
@@ -42,7 +41,7 @@ const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const initAuth = async (): Promise<void> => {
-      const storedToken = Cookies.get(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+      const storedToken = localStorage.getItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
       if (storedToken) {
         setLoading(true)
         await axios
@@ -58,7 +57,7 @@ const AuthProvider = ({ children }: Props) => {
             setUser(userdata)
           })
           .catch(() => {
-            Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+            localStorage.removeItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
             localStorage.removeItem('userData')
             setUser(null)
             setLoading(false)
@@ -80,7 +79,8 @@ const AuthProvider = ({ children }: Props) => {
       .post(`${api.AUTH}/login`, params)
       .then(async (response) => {
         const token = response.data.data.accessToken
-        Cookies.set(ACCESS_TOKEN_KEY.MEDICAL_ADMIN, response.data.data.accessToken)
+        localStorage.setItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN, response.data.data.accessToken)
+        // Cookies.set(ACCESS_TOKEN_KEY.MEDICAL_ADMIN, response.data.data.accessToken)
 
         // LOGIN
         await axios
@@ -96,7 +96,7 @@ const AuthProvider = ({ children }: Props) => {
             setUser(userdata)
           })
           .catch(() => {
-            Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+            localStorage.removeItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
             localStorage.removeItem('userData')
             setUser(null)
             setLoading(false)
@@ -125,7 +125,7 @@ const AuthProvider = ({ children }: Props) => {
   const handleLogout = () => {
     setUser(null)
     localStorage.removeItem('userData')
-    Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+    localStorage.removeItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
     router.replace('/login')
   }
 
