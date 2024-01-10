@@ -1,4 +1,5 @@
 export * from './create-emotion-cache'
+export * from './format-currency-vnd'
 export * from './format'
 export * from './get-daterange'
 export * from './get-initials'

@@ -52,7 +52,6 @@ import { ReactElement, ReactNode, useEffect, useState } from 'react'
 
 import { REQUEST_HEADER_AUTH_KEY, ACCESS_TOKEN_KEY, TOKEN_TYPE } from 'core'
 import axios from 'axios'
-import Cookies from 'js-cookie'
 import { isEmpty } from 'lodash'
 
 import BlankLayout from '../layouts/BlankLayout'
@@ -64,7 +63,7 @@ import 'styles/global.css'
 
 axios.interceptors.request.use(
   (config) => {
-    const accessToken = Cookies.get(ACCESS_TOKEN_KEY.MEDICAL_ADMIN) ?? ''
+    const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN) ?? ''
     if (!isEmpty(accessToken)) {
       config.headers[REQUEST_HEADER_AUTH_KEY] = `${TOKEN_TYPE}${accessToken}`
     }
@@ -87,11 +86,14 @@ axios.interceptors.response.use(
     if (err.response) {
       if (unauthorizedCode.includes(err.response.status as number) && !originalConfig._retry) {
         originalConfig._retry = true
-        Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+        localStorage.removeItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+        localStorage.removeItem('userData')
         return Promise.reject(err.response.data)
       }
 
       if (forbidenCode.includes(err.response.status as number) && err.response.data) {
+        localStorage.removeItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+        localStorage.removeItem('userData')
         return Promise.reject(err.response.data)
       }
     }

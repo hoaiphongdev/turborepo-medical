@@ -26,7 +26,9 @@ const CategoriesPage = () => {
       })
 
       return result as Array<CartStats>
-    }
+    },
+    retry: false,
+    staleTime: Infinity,
   })
 
   useEffect(() => {
