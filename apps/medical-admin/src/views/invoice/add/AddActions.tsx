@@ -25,10 +25,12 @@ const OptionsWrapper = styled(Box)<BoxProps>(() => ({
 type AddActionProps = {
   control: any
   isProcessing: boolean
+  handleSaveAndPrintInvoice: () => void
+  handleSaveAndPaidInvoice: () => void
 }
 
 const AddActions = (props: AddActionProps) => {
-  const { control, isProcessing = false } = props
+  const { control, isProcessing = false, handleSaveAndPrintInvoice, handleSaveAndPaidInvoice } = props
 
   const [isAcceptTerm, setIsAcceptTerm] = useState<boolean>(true)
 
@@ -92,17 +94,35 @@ const AddActions = (props: AddActionProps) => {
             id="invoice-add-payment-terms"
           />
         </OptionsWrapper>
-
         <Button
           disabled={!isAcceptTerm || isProcessing}
-          name="form-add-invoice"
+          form="form-action-invoice"
           type="submit"
           fullWidth
-          sx={{ my: 3.5 }}
-          variant="contained"
-          startIcon={<Icon icon="mdi:send-outline" />}
+          sx={{ mt: 3.5 }}
+          variant="outlined"
         >
           Lưu hóa đơn
+        </Button>
+        <Button
+          disabled={!isAcceptTerm || isProcessing}
+          fullWidth
+          sx={{ mt: 3.5 }}
+          variant="outlined"
+          onClick={handleSaveAndPrintInvoice}
+          startIcon={<Icon icon="mdi:printer" />}
+        >
+          Lưu & In hóa đơn
+        </Button>
+        <Button
+          disabled={!isAcceptTerm || isProcessing}
+          fullWidth
+          sx={{ mt: 3.5 }}
+          variant="contained"
+          onClick={handleSaveAndPaidInvoice}
+          startIcon={<Icon icon="mdi:send-outline" />}
+        >
+          Đã thanh toán hóa đơn
         </Button>
       </CardContent>
     </Card>

@@ -7,47 +7,42 @@ import { hexToRGBA } from 'core'
 import { useTheme } from '@mui/system'
 import { isEmpty } from 'lodash'
 
-interface ISelectProductProps {
-  productId?: string
-  productName?: string
-  invoiceUIId: string
-  handleSelectProduct: (invoiceUIId: string, productSelected: any) => void
-  exceptIds: Array<string>
+interface ISelectClientProps {
+  clientId?: string
+  handleSelectClient: (clientSelected: any) => void
 }
 
-const SelectProduct: FC<ISelectProductProps> = (props) => {
-  const { productId, productName = 'Chọn sản phẩm', invoiceUIId, handleSelectProduct, exceptIds = [] } = props
+const SelectClient: FC<ISelectClientProps> = (props) => {
+  const { clientId, handleSelectClient } = props
 
   const theme = useTheme()
-  const [dataProducts, setDataProducts] = useState<Array<any>>([])
+  const [dataClients, setDataClients] = useState<Array<any>>([])
 
-  const [nameProduct, setNameProduct] = useState('')
-  const { isLoading, data } = useQuery({
-    queryKey: ['get-select-product', nameProduct, invoiceUIId],
+  const [nameClient, setNameClient] = useState('')
+  const { isLoading, isRefetching, refetch } = useQuery({
+    queryKey: ['get-select-client', nameClient],
     queryFn: async () => {
-      const response = await axios.get(`${api.PRODUCT}`, {
+      const response = await axios.get(`${api.CLIENT}`, {
         params: {
-          keyword: nameProduct
+          keyword: nameClient
         }
       })
 
       const products = response?.data?.data?.records ?? []
-      setDataProducts(products)
+      setDataClients(products)
 
-      return products
-        .filter((p: any) => !exceptIds.includes(p._id))
-        .map((item: any) => {
-          return {
-            label: `${item.name}`,
-            value: item._id
-          }
-        })
+      return products.map((item: any) => {
+        return {
+          label: `${item.name}`,
+          value: item._id
+        }
+      })
     },
     retry: false,
     staleTime: Infinity
   })
 
-  const handleChangeInput = (e: any) => setNameProduct(e ?? '')
+  const handleChangeInput = (e: any) => setNameClient(e ?? '')
 
   return (
     <Select
@@ -75,24 +70,30 @@ const SelectProduct: FC<ISelectProductProps> = (props) => {
           }
         }
       }}
-      placeholder={isLoading ? 'Loading...' : productName}
-      options={(data ?? []).filter((p: any) => !exceptIds.includes(p._id))}
-      isLoading={isLoading}
+      placeholder={isLoading || isRefetching ? 'Đang tải các nhà thuốc...' : 'Chọn nhà thuốc/bệnh viện'}
+      options={(dataClients ?? []).map((item: any) => {
+        return {
+          label: `${item.name}`,
+          value: item._id
+        }
+      })}
+      isLoading={isLoading || isRefetching}
+      onFocus={() => refetch()}
       onInputChange={handleChangeInput}
       defaultValue={
-        isEmpty(productId)
+        isEmpty(clientId)
           ? null
           : {
-              label: dataProducts.find((x: any) => x._id === productId)?.name ?? '',
-              value: productId
+              label: dataClients.find((x: any) => x._id === clientId)?.name ?? '',
+              value: clientId
             }
       }
       onChange={(item: any) => {
-        const productSelected = dataProducts.find((x: any) => x._id === item.value)
-        handleSelectProduct(invoiceUIId, productSelected)
+        const clientSelected = dataClients.find((x: any) => x._id === item.value)
+        handleSelectClient(clientSelected)
       }}
     />
   )
 }
 
-export default SelectProduct
+export default SelectClient

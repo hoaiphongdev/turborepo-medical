@@ -61,7 +61,6 @@ const VerticalLayout = (props: LayoutProps) => {
 
   // ** Toggle Functions
   const toggleNavVisibility = () => setNavVisible(!navVisible)
-  console.log('verticalLayoutProps', verticalLayoutProps)
   return (
     <>
       <VerticalLayoutWrapper className="layout-wrapper">

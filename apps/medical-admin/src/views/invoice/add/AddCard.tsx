@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, forwardRef, ForwardedRef } from 'react'
+import { forwardRef, ForwardedRef } from 'react'
 
 // ** MUI Imports
 import Card from '@mui/material/Card'
@@ -36,17 +36,11 @@ import SelectProduct from './SelectProduct'
 import { formatCurrencyVND } from 'core'
 import { isEmpty } from 'lodash'
 import { calculatorPrice } from 'pages/invoice/create-invoice'
+import SelectClient from './SelectClient'
+import dayjs from 'dayjs'
 
 interface PickerProps {
   label?: string
-}
-
-interface Props {
-  isProcessing: boolean
-  invoiceItems: Array<any>
-  setInvoiceItems: (arr: Array<any>) => void
-  control: any
-  errors: any
 }
 
 const CustomInput = forwardRef(({ ...props }: PickerProps, ref: ForwardedRef<HTMLElement>) => {
@@ -111,19 +105,29 @@ const InvoiceAction = styled(Box)<BoxProps>(({ theme }) => ({
   borderLeft: `1px solid ${theme.palette.divider}`
 }))
 
-const AddCard = (props: Props) => {
-  const { isProcessing = false, control, errors, invoiceItems, setInvoiceItems } = props
+interface AddCardProps {
+  isProcessing: boolean
+  invoiceItems: Array<any>
+  setInvoiceItems: (arr: Array<any>) => void
+  clientData: any
+  setClientData: (arr: any) => void
+  control: any
+  errors: any
+}
+
+const AddCard = (props: AddCardProps) => {
+  const { isProcessing = false, control, errors, invoiceItems, setInvoiceItems, clientData, setClientData } = props
 
   // const [invoiceItems, setInvoiceItems] = useState<Array<any>>([])
 
   const handleSelectProduct = (invoiceUIId: string, product: any) => {
-    if(isProcessing) return
+    if (isProcessing) return
     const invoiceItemIndex = invoiceItems.findIndex((x: any) => x.id === invoiceUIId)
 
     const temp = [...invoiceItems]
     temp[invoiceItemIndex] = {
       id: invoiceUIId,
-      productId: product._id,
+      productId: product?._id,
       name: product?.name,
       price: product?.salePrice,
       quantity: 1,
@@ -136,9 +140,9 @@ const AddCard = (props: Props) => {
   }
 
   const handleChangeQuantity = (invoiceUIId: string, quantity: any) => {
-    if(isProcessing) return
+    if (isProcessing) return
     const invoiceItemIndex = invoiceItems.findIndex((x: any) => x.id === invoiceUIId)
-    let requantity = isEmpty(quantity.trim()) ? 1 : quantity
+    const requantity = isEmpty(quantity.trim()) ? 1 : quantity
     const temp = [...invoiceItems]
 
     temp[invoiceItemIndex] = {
@@ -151,7 +155,7 @@ const AddCard = (props: Props) => {
   }
 
   const handleChangeNote = (invoiceUIId: string, note: string) => {
-    if(isProcessing) return
+    if (isProcessing) return
     const invoiceItemIndex = invoiceItems.findIndex((x: any) => x.id === invoiceUIId)
     const temp = [...invoiceItems]
 
@@ -168,6 +172,10 @@ const AddCard = (props: Props) => {
 
     const temp = [...invoiceItems].filter((x: any) => x.id !== invoiceUIId)
     setInvoiceItems(temp)
+  }
+
+  const handleSelectClient = (clientSelected: any) => {
+    setClientData(clientSelected)
   }
 
   return (
@@ -187,7 +195,7 @@ const AddCard = (props: Props) => {
                   236B Lê Văn Sỹ, Phường 1, Quận Tân Bình
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 1 }}>
-                  TP. Hồ Chí Minh, 700000, Việt Nam
+                  TP Hồ Chí Minh, 700000
                 </Typography>
                 <Typography variant="body2">+1 (123) 456 7891, +44 (876) 543 2198</Typography>
               </div>
@@ -197,22 +205,24 @@ const AddCard = (props: Props) => {
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: { xl: 'flex-end', xs: 'flex-start' } }}>
               <Box sx={{ mb: 4, display: 'flex', alignItems: 'center' }}>
                 <Typography variant="body2" sx={{ mr: 2, width: '200px' }}>
-                  Ngày phát hành:
+                  Ngày phát hành (*):
                 </Typography>
                 <Grid item xs={12}>
                   <Controller
                     name="dateIssues"
                     control={control}
                     rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <DatePicker
-                        id="issue-date"
-                        minDate={new Date()}
-                        selected={value}
-                        customInput={<CustomInput />}
-                        onChange={onChange}
-                      />
-                    )}
+                    render={({ field: { value, onChange } }) => {
+                      return (
+                        <DatePicker
+                          id="issue-date"
+                          minDate={new Date()}
+                          selected={dayjs(value).toDate()}
+                          customInput={<CustomInput />}
+                          onChange={onChange}
+                        />
+                      )
+                    }}
                   />
                   {errors.dateIssues && (
                     <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-name">
@@ -223,7 +233,7 @@ const AddCard = (props: Props) => {
               </Box>
               <Box sx={{ display: 'flex' }}>
                 <Typography variant="body2" sx={{ mr: 2, width: '200px' }}>
-                  Ngày thanh toán:
+                  Ngày thanh toán (*):
                 </Typography>
                 <Grid item xs={12}>
                   <Controller
@@ -231,7 +241,13 @@ const AddCard = (props: Props) => {
                     control={control}
                     rules={{ required: true }}
                     render={({ field: { value, onChange } }) => (
-                      <DatePicker id="due-date" selected={value} customInput={<CustomInput />} onChange={onChange} />
+                      <DatePicker
+                        id="due-date"
+                        minDate={new Date()}
+                        selected={dayjs(value).toDate()}
+                        customInput={<CustomInput />}
+                        onChange={onChange}
+                      />
                     )}
                   />
                   {errors.paidAt && (
@@ -249,59 +265,69 @@ const AddCard = (props: Props) => {
       <Divider sx={{ my: (theme) => `${theme.spacing(1)} !important` }} />
 
       <CardContent sx={{ pb: 2 }}>
-        <Grid container spacing={8}>
-          <Grid item xs={12} sm={8} sx={{ mb: { lg: 0, xs: 4 } }}>
+        <Grid container spacing={10}>
+          <Grid item xs={12} sm={7} sx={{ mb: { lg: 0, xs: 4 } }}>
             <Typography variant="subtitle2" sx={{ mb: 3, color: 'text.primary' }}>
-              Hóa đơn cho:
+              Hóa đơn cho (*):
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Controller
-                  name="customerName"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      fullWidth
-                      variant="outlined"
-                      label="Tên khách hàng (*)"
-                      value={value ?? ''}
-                      onChange={onChange}
-                      placeholder="Nhà thuốc pharmacy"
-                    />
-                  )}
-                />
-                {errors.customerName && (
-                  <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-name">
-                    {errors.customerName.message}
-                  </FormHelperText>
-                )}
+                <SelectClient handleSelectClient={handleSelectClient} clientId={clientData?._id} />
               </Grid>
               <Grid item xs={12}>
-                <Controller
-                  name="customerEmail"
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <TextField
-                      fullWidth
-                      variant="outlined"
-                      label="Email khách hàng (*)"
-                      value={value ?? ''}
-                      onChange={onChange}
-                      placeholder="pharmacy@gmail.com"
-                    />
-                  )}
-                />
-                {errors.customerEmail && (
-                  <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-name">
-                    {errors.customerEmail.message}
-                  </FormHelperText>
-                )}
+                <TableContainer>
+                  <Table>
+                    <TableBody>
+                      <TableRow>
+                        <MUITableCell>
+                          <Typography variant="body2">Tên khách hàng</Typography>
+                        </MUITableCell>
+                        <MUITableCell>
+                          <Typography variant="body2">{clientData?.name}</Typography>
+                        </MUITableCell>
+                      </TableRow>
+                      <TableRow>
+                        <MUITableCell>
+                          <Typography variant="body2">Email</Typography>
+                        </MUITableCell>
+                        <MUITableCell>
+                          <Typography variant="body2">{clientData?.email}</Typography>
+                        </MUITableCell>
+                      </TableRow>
+                      <TableRow>
+                        <MUITableCell>
+                          <Typography variant="body2">Số điện thoại:</Typography>
+                        </MUITableCell>
+                        <MUITableCell>
+                          <Typography variant="body2">{clientData?.phone}</Typography>
+                        </MUITableCell>
+                      </TableRow>
+                      <TableRow>
+                        <MUITableCell>
+                          <Typography variant="body2">Mã số thuế</Typography>
+                        </MUITableCell>
+                        <MUITableCell>
+                          <Typography variant="body2">{clientData?.taxNumber}</Typography>
+                        </MUITableCell>
+                      </TableRow>
+                      <TableRow>
+                        <MUITableCell>
+                          <Typography variant="body2">Địa chỉ</Typography>
+                        </MUITableCell>
+                        <MUITableCell>
+                          <Typography variant="body2">
+                            {clientData?.shippingAddress?.line1}, {clientData?.shippingAddress?.line2},{' '}
+                            {clientData?.shippingAddress?.city}
+                          </Typography>
+                        </MUITableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} sm={4} sx={{ display: 'flex', justifyContent: ['flex-start'] }}>
+          <Grid item xs={12} sm={5} sx={{ display: 'flex', justifyContent: ['flex-start'] }}>
             <div>
               <Typography variant="subtitle2" sx={{ mb: 2.5, color: 'text.primary' }}>
                 Thanh toán cho:
@@ -319,7 +345,7 @@ const AddCard = (props: Props) => {
                     </TableRow>
                     <TableRow>
                       <MUITableCell>
-                        <Typography variant="body2">Country:</Typography>
+                        <Typography variant="body2">Quốc gia:</Typography>
                       </MUITableCell>
                       <MUITableCell>
                         <Typography variant="body2">Việt Nam</Typography>
@@ -365,9 +391,10 @@ const AddCard = (props: Props) => {
                         className="col-title"
                         sx={{ mb: { md: 2, xs: 0 }, color: 'text.primary' }}
                       >
-                        Sản phẩm
+                        Sản phẩm (*)
                       </Typography>
                       <SelectProduct
+                        productName={item?.name}
                         productId={item.productId}
                         invoiceUIId={item.id}
                         handleSelectProduct={handleSelectProduct}
@@ -412,7 +439,6 @@ const AddCard = (props: Props) => {
                         size="small"
                         type="number"
                         placeholder="1"
-                        defaultValue="1"
                         value={item?.quantity}
                         onChange={(e) => handleChangeQuantity(item.id, e.target.value)}
                         InputProps={{ inputProps: { min: 0 } }}
@@ -534,7 +560,6 @@ const AddCard = (props: Props) => {
               onChange={onChange}
               id="invoice-note"
               sx={{ '& .MuiInputBase-input': { color: 'text.secondary' } }}
-              defaultValue="Thank for your bussiness 💘"
             />
           )}
         />

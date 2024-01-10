@@ -9,6 +9,20 @@ const navigation = (): VerticalNavItemsType => {
       icon: 'mdi:home-outline'
     },
     {
+      title: 'Invoice',
+      icon: 'mdi:invoice-text-edit-outline',
+      children: [
+        {
+          title: 'List',
+          path: '/invoice'
+        },
+        {
+          title: 'Create',
+          path: '/invoice/create-invoice'
+        }
+      ]
+    },
+    {
       title: 'Categories',
       icon: 'mdi:note-text-outline',
       children: [
@@ -37,16 +51,16 @@ const navigation = (): VerticalNavItemsType => {
       ]
     },
     {
-      title: 'Invoice',
-      icon: 'mdi:invoice-text-edit-outline',
+      title: 'Client',
+      icon: 'mdi:account-box',
       children: [
         {
           title: 'List',
-          path: '/invoice'
+          path: '/client'
         },
         {
           title: 'Create',
-          path: '/invoice/create-invoice'
+          path: '/client/create'
         }
       ]
     }

@@ -11,7 +11,7 @@ import Card from '@mui/material/Card'
 import Tooltip from '@mui/material/Tooltip'
 import { styled } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
-import { DataGrid, GridColDef } from '@mui/x-data-grid'
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid'
 
 // ** Icon Imports
 import Icon from '@core/components/icon'
@@ -21,10 +21,9 @@ import Icon from '@core/components/icon'
 // ** Types Imports
 // import { RootState, AppDispatch } from 'store'
 import { ThemeColor } from '@core/layouts/types'
-import { InvoiceType } from 'types/apps/invoiceTypes'
 
 // ** Utils Import
-import { formatCurrencyVND, useDebounce } from 'core'
+import { formatCurrencyVND } from 'core'
 
 // ** Custom Components Imports
 import CustomChip from '@core/components/mui/chip'
@@ -39,7 +38,10 @@ import { api } from 'configs/api.endpoint'
 import { PaginatedType } from 'types/common/paginated'
 import dayjs from 'dayjs'
 import { IconButton } from '@mui/material'
-import OptionsMenu from '@core/components/option-menu'
+import { isEmpty } from 'lodash'
+
+export const getInitials = (string: string) =>
+  string.split(/\s/).reduce((response, word) => (response += word.slice(0, 1)), '')
 
 interface InvoiceStatusObj {
   [key: string]: {
@@ -49,7 +51,30 @@ interface InvoiceStatusObj {
 }
 
 interface CellType {
-  row: InvoiceType
+  row: any
+}
+
+const renderClient = (params: GridRenderCellParams) => {
+  const { row } = params
+  const stateNum = Math.floor(Math.random() * 6)
+  const states = ['success', 'error', 'warning', 'info', 'primary', 'secondary']
+  const color = states[stateNum]
+
+  if (!isEmpty(row?.customerInformation?.avatar)) {
+    return (
+      <CustomAvatar src={`${row?.customerInformation?.avatar}`} sx={{ mr: 3, width: '1.875rem', height: '1.875rem' }} />
+    )
+  } else {
+    return (
+      <CustomAvatar
+        skin="light"
+        color={color as ThemeColor}
+        sx={{ mr: 3, fontSize: '.8rem', width: '1.875rem', height: '1.875rem' }}
+      >
+        {getInitials(row?.customerInformation?.name ? row?.customerInformation?.name : 'John Doe')}
+      </CustomAvatar>
+    )
+  }
 }
 
 // ** Styled component for the link in the dataTable
@@ -82,8 +107,6 @@ const defaultColumns: GridColDef[] = [
     field: 'invoiceStatus',
     headerName: 'Trạng thái',
     renderCell: ({ row }: CellType) => {
-      console.log('row', row)
-
       const { dueDate, balance, invoiceStatus } = row
 
       const color = invoiceStatusObj[invoiceStatus] ? invoiceStatusObj[invoiceStatus].color : 'primary'
@@ -120,19 +143,13 @@ const defaultColumns: GridColDef[] = [
     field: 'name',
     minWidth: 300,
     headerName: 'Khách hàng',
-    renderCell: ({ row }: CellType) => {
-      console.log('row client', row)
+    renderCell: (params: GridRenderCellParams) => {
+      const { row } = params
       const { name, companyEmail } = row
 
       return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <CustomAvatar
-            skin="light"
-            color={(row.avatarColor as ThemeColor) || ('primary' as ThemeColor)}
-            sx={{ mr: 3, fontSize: '1rem', width: 34, height: 34 }}
-          >
-            {row.name.toLocaleUpperCase().slice(0, 2)}
-          </CustomAvatar>
+          {renderClient(params)}
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Typography
               noWrap
@@ -186,27 +203,16 @@ const defaultColumns: GridColDef[] = [
     headerName: 'Actions',
     renderCell: ({ row }: CellType) => (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title="View">
-          <IconButton size="small" component={Link} sx={{ mr: 0.5 }} href={`/apps/invoice/preview/${row.id}`}>
-            <Icon icon="mdi:eye-outline" />
+        <Tooltip title="In/tải hóa đơn">
+          <IconButton size="small" component={Link} sx={{ mr: 0.5 }} href={`/invoice/print/${row._id}`}>
+            <Icon icon="mdi:printer" />
           </IconButton>
         </Tooltip>
-        <OptionsMenu
-          iconProps={{ fontSize: 20 }}
-          iconButtonProps={{ size: 'small' }}
-          menuProps={{ sx: { '& .MuiMenuItem-root svg': { mr: 2 } } }}
-          options={[
-            {
-              text: 'Print',
-              icon: <Icon icon="mdi:printer" fontSize={20} />
-            },
-            {
-              text: 'Edit',
-              href: `/apps/invoice/edit/${row.id}`,
-              icon: <Icon icon="mdi:pencil-outline" fontSize={20} />
-            }
-          ]}
-        />
+        <Tooltip title="Chỉnh sửa">
+          <IconButton size="small" component={Link} sx={{ mr: 0.5 }} href={`/invoice/edit-invoice/${row._id}`}>
+            <Icon icon="mdi:pencil-outline" />
+          </IconButton>
+        </Tooltip>
       </Box>
     )
   }
@@ -216,49 +222,44 @@ const defaultColumns: GridColDef[] = [
 
 const InvoiceListPage = () => {
   // ** State
-  const [paginationModel, setPaginationModel] = useState({ page: 1, pageSize: 10 })
-  const [keyword, setKeyword] = useState<string>('')
-  const keywordDebounce = useDebounce(keyword, 600)
+  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 })
 
   const { isLoading, isRefetching, data, refetch } = useQuery({
-    queryKey: ['get-invoices', paginationModel.page, paginationModel.pageSize, keywordDebounce],
+    queryKey: ['get-invoices'],
     queryFn: async () => {
-      const { page = 1, pageSize: limit = 10 } = paginationModel
-      let repage = page === 0 ? page + 1 : page
-      const response = await axios.get(`${api.INVOICE}`, {
-        params: {
-          repage,
-          limit,
-          keyword: keywordDebounce.trim()
-        }
-      })
+      // const { page = 1, pageSize: limit = 10 } = paginationModel
+      // let repage = page === 0 ? page + 1 : page
+      const response = await axios.get(`${api.INVOICE}`)
 
       return {
         ...response.data.data,
-        records: (response?.data?.data?.records ?? []).map((item: any) => {
-          return {
-            id: item.poNumber,
-            invoiceStatus: item.status,
-            name: item?.customerInformation?.name ?? '<Emtpty>',
-            companyEmail: item?.customerInformation?.email ?? '<Emtpty>',
-            total: item.total,
-            issuedDate: dayjs(item.dateIssues).format('DD/MM/YYYY'),
-            balance: item.amountDue ?? 0,
-            dueDate: dayjs(item.paidAt).format('DD/MM/YYYY')
-          }
-        })
+        records: (response?.data?.data?.records ?? [])
+          .map((item: any) => {
+            return {
+              ...item,
+              id: item.poNumber,
+              invoiceStatus: item.status,
+              name: item?.customerInformation?.name ?? '<Emtpty>',
+              companyEmail: item?.customerInformation?.email ?? '<Emtpty>',
+              total: item.total,
+              issuedDate: dayjs(item.dateIssues).format('DD/MM/YYYY'),
+              balance: item.amountDue ?? 0,
+              dueDate: dayjs(item.paidAt).format('DD/MM/YYYY')
+            }
+          })
+          .sort((a: any, b: any) => {
+            return b?.poNumber - a?.poNumber
+          })
       } as PaginatedType
-    }
+    },
+    retry: false,
+    staleTime: Infinity
   })
 
   useEffect(() => {
     refetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const handleFilter = (val: string = '') => {
-    setKeyword(val)
-  }
 
   const columns: GridColDef[] = [...defaultColumns]
 
@@ -267,7 +268,7 @@ const InvoiceListPage = () => {
       <Grid container spacing={6}>
         <Grid item xs={12}>
           <Card>
-            <TableHeader value={keyword} handleFilter={handleFilter} />
+            <TableHeader />
             {isLoading || isRefetching ? (
               <Typography variant="body2" sx={{ margin: 7 }}>
                 Loading
@@ -280,10 +281,7 @@ const InvoiceListPage = () => {
                 rows={data?.records ?? []}
                 columns={columns}
                 pageSizeOptions={[10, 25, 50]}
-                paginationModel={{
-                  page: paginationModel.page ?? 1,
-                  pageSize: paginationModel.pageSize ?? 10
-                }}
+                paginationModel={paginationModel}
                 onPaginationModelChange={setPaginationModel}
               />
             )}

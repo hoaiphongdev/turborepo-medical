@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 
 // ** Hooks Import
 import { useAuth } from 'hooks/useAuth'
+import { ACCESS_TOKEN_KEY } from 'core'
 
 interface AuthGuardProps {
   children: ReactNode
@@ -16,15 +17,13 @@ const AuthGuard = (props: AuthGuardProps) => {
   const { children, fallback } = props
   const auth = useAuth()
   const router = useRouter()
-  console.log('auth', auth)
-
   useEffect(
     () => {
       if (!router.isReady) {
         return
       }
 
-      if (!auth.user && !localStorage.getItem('userData')) {
+      if (!auth.user && !localStorage.getItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)) {
         if (router.asPath !== '/') {
           router.replace({
             pathname: '/login',
