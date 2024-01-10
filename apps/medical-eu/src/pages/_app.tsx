@@ -88,10 +88,13 @@ axios.interceptors.response.use(
       if (unauthorizedCode.includes(err.response.status as number) && !originalConfig._retry) {
         originalConfig._retry = true
         Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+        localStorage.removeItem('userData')
         return Promise.reject(err.response.data)
       }
 
       if (forbidenCode.includes(err.response.status as number) && err.response.data) {
+        Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+        localStorage.removeItem('userData')
         return Promise.reject(err.response.data)
       }
     }

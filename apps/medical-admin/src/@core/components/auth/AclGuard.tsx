@@ -5,7 +5,7 @@ import { ReactNode, useEffect } from 'react'
 import { useRouter } from 'next/router'
 
 // ** Types
-import type { ACLObj, AppAbility } from 'configs/acl'
+import type { ACLObj } from 'configs/acl'
 
 // ** Context Imports
 import { AbilityContext } from 'layouts/components/acl/Can'

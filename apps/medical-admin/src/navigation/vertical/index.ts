@@ -46,7 +46,7 @@ const navigation = (): VerticalNavItemsType => {
         },
         {
           title: 'Create',
-          path: '/invoice-create'
+          path: '/invoice/create-invoice'
         }
       ]
     }

@@ -16,6 +16,7 @@ const AuthGuard = (props: AuthGuardProps) => {
   const { children, fallback } = props
   const auth = useAuth()
   const router = useRouter()
+  console.log('auth', auth)
 
   useEffect(
     () => {
@@ -23,7 +24,7 @@ const AuthGuard = (props: AuthGuardProps) => {
         return
       }
 
-      if (auth.user === null && !window.localStorage.getItem('userData')) {
+      if (!auth.user && !localStorage.getItem('userData')) {
         if (router.asPath !== '/') {
           router.replace({
             pathname: '/login',
@@ -38,7 +39,7 @@ const AuthGuard = (props: AuthGuardProps) => {
     [router.route]
   )
 
-  if (auth.loading || auth.user === null) {
+  if (auth.loading) {
     return fallback
   }
 

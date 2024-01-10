@@ -57,7 +57,7 @@ const AuthProvider = ({ children }: Props) => {
           })
           .catch(() => {
             Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
-            // localStorage.removeItem('userData')
+            localStorage.removeItem('userData')
             // localStorage.removeItem('refreshToken')
             // localStorage.removeItem('accessToken')
             setUser(null)
