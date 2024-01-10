@@ -12,7 +12,6 @@ import authConfig from 'configs/auth'
 
 // ** Types
 import { AuthValuesType, LoginParams, ErrCallbackType, UserDataType } from './types'
-import Cookies from 'js-cookie'
 import { ACCESS_TOKEN_KEY } from 'core'
 
 // ** Defaults
@@ -42,7 +41,7 @@ const AuthProvider = ({ children }: Props) => {
   useEffect(() => {
     const initAuth = async (): Promise<void> => {
       // const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
-      const storedToken = Cookies.get(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)!
+      const storedToken = localStorage.getItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)!
       if (storedToken) {
         setLoading(true)
         await axios
@@ -56,8 +55,8 @@ const AuthProvider = ({ children }: Props) => {
             setUser({ id: response.data.userData._id, ...response.data.userData })
           })
           .catch(() => {
-            Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
-            // localStorage.removeItem('userData')
+            localStorage.removeItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+            localStorage.removeItem('userData')
             // localStorage.removeItem('refreshToken')
             // localStorage.removeItem('accessToken')
             setUser(null)
@@ -79,7 +78,8 @@ const AuthProvider = ({ children }: Props) => {
     axios
       .post(authConfig.loginEndpoint, params)
       .then(async (response) => {
-        Cookies.set(ACCESS_TOKEN_KEY.MEDICAL_ADMIN, response.data.accessToken)
+        localStorage.setItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN, response.data.accessToken)
+        // Cookies.set(ACCESS_TOKEN_KEY.MEDICAL_ADMIN, response.data.accessToken)
         // params.rememberMe
         //   ? window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.accessToken)
         //   : null
@@ -100,7 +100,7 @@ const AuthProvider = ({ children }: Props) => {
 
   const handleLogout = () => {
     setUser(null)
-    Cookies.remove(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+    localStorage.removeItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
     localStorage.removeItem('userData')
     // window.localStorage.removeItem(authConfig.storageTokenKeyName)
     router.push('/login')

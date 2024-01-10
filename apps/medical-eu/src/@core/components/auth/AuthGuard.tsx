@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 
 // ** Hooks Import
 import { useAuth } from 'hooks/useAuth'
-import Cookies from 'js-cookie'
 import { ACCESS_TOKEN_KEY } from 'core'
 import { isEmpty } from 'lodash'
 
@@ -20,7 +19,7 @@ const AuthGuard = (props: AuthGuardProps) => {
   const auth = useAuth()
   const router = useRouter()
 
-  const token = Cookies.get(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
+  const token = localStorage.getItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
 
   useEffect(
     () => {

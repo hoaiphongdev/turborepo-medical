@@ -216,9 +216,8 @@ const AddNewCategoryForm = () => {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = (data: any) => {
-    console.log('data', data)
-  }
+  const onSubmit = () => {}
+  
   return (
     <>
       <Card
@@ -295,7 +294,6 @@ const EnhancedTable = () => {
   const handleClick = (event: MouseEvent<unknown>, name: string) => {
     const selectedIndex = selected.indexOf(name)
     let newSelected: readonly string[] = []
-    console.log('selectedIndex', selectedIndex)
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, name)
     } else if (selectedIndex === 0) {

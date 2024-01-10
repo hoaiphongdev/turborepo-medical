@@ -6,7 +6,6 @@ import { useRouter } from 'next/router'
 
 // ** Hooks Import
 import { useAuth } from 'hooks/useAuth'
-import Cookies from 'js-cookie'
 import { ACCESS_TOKEN_KEY } from 'core'
 
 interface GuestGuardProps {
@@ -18,15 +17,14 @@ const GuestGuard = (props: GuestGuardProps) => {
   const { children, fallback } = props
   const auth = useAuth()
   const router = useRouter()
-  const token = Cookies.get(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
 
   useEffect(() => {
     if (!router.isReady) {
       return
     }
-
+    const token = localStorage.getItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)
     if (token) {
-      router.replace('/')
+      // router.replace('/')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.route])

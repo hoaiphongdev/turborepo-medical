@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 
 // ** Hooks Import
 import { useAuth } from 'hooks/useAuth'
+import { ACCESS_TOKEN_KEY } from 'core'
 
 interface GuestGuardProps {
   children: ReactNode
@@ -22,7 +23,7 @@ const GuestGuard = (props: GuestGuardProps) => {
       return
     }
 
-    if (window.localStorage.getItem('userData')) {
+    if (localStorage.getItem(ACCESS_TOKEN_KEY.MEDICAL_ADMIN)) {
       router.replace('/')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

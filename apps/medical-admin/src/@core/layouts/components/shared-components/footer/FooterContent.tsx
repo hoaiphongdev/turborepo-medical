@@ -22,8 +22,8 @@ const FooterContent = () => {
           ❤️
         </Box>
         {` by `}
-        <LinkStyled target="_blank" href="https://pixinvent.com/">
-          Peterpan
+        <LinkStyled target="_blank" href="/">
+          Peterpan & CD
         </LinkStyled>
       </Typography>
     </Box>
