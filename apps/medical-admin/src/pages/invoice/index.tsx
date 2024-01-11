@@ -39,6 +39,8 @@ import { PaginatedType } from 'types/common/paginated'
 import dayjs from 'dayjs'
 import { IconButton } from '@mui/material'
 import { isEmpty } from 'lodash'
+import useClipboard from '@core/hooks/useClipboard'
+import toast from 'react-hot-toast'
 
 export const getInitials = (string: string) =>
   string.split(/\s/).reduce((response, word) => (response += word.slice(0, 1)), '')
@@ -93,136 +95,24 @@ const invoiceStatusObj: InvoiceStatusObj = {
   pending: { color: 'info', icon: 'mdi:clock-time-two-outline' }
 }
 
-const defaultColumns: GridColDef[] = [
-  {
-    flex: 0.1,
-    field: 'id',
-    minWidth: 80,
-    headerName: '#',
-    renderCell: ({ row }: CellType) => <LinkStyled href={`/apps/invoice/preview/${row.id}`}>{`#${row.id}`}</LinkStyled>
-  },
-  {
-    flex: 0.1,
-    minWidth: 80,
-    field: 'invoiceStatus',
-    headerName: 'Trạng thái',
-    renderCell: ({ row }: CellType) => {
-      const { dueDate, balance, invoiceStatus } = row
-
-      const color = invoiceStatusObj[invoiceStatus] ? invoiceStatusObj[invoiceStatus].color : 'primary'
-
-      return (
-        <Tooltip
-          title={
-            <div>
-              <Typography variant="caption" sx={{ color: 'common.white', fontWeight: 600 }}>
-                {invoiceStatus}
-              </Typography>
-              <br />
-              <Typography variant="caption" sx={{ color: 'common.white', fontWeight: 600 }}>
-                Balance:
-              </Typography>{' '}
-              {balance}
-              <br />
-              <Typography variant="caption" sx={{ color: 'common.white', fontWeight: 600 }}>
-                Due Date:
-              </Typography>{' '}
-              {dueDate}
-            </div>
-          }
-        >
-          <CustomAvatar skin="light" color={color} sx={{ width: 34, height: 34 }}>
-            <Icon icon={invoiceStatusObj[invoiceStatus].icon} fontSize="1.25rem" />
-          </CustomAvatar>
-        </Tooltip>
-      )
-    }
-  },
-  {
-    flex: 0.25,
-    field: 'name',
-    minWidth: 300,
-    headerName: 'Khách hàng',
-    renderCell: (params: GridRenderCellParams) => {
-      const { row } = params
-      const { name, companyEmail } = row
-
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          {renderClient(params)}
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography
-              noWrap
-              variant="body2"
-              sx={{ color: 'text.primary', fontWeight: 500, lineHeight: '22px', letterSpacing: '.1px' }}
-            >
-              {name}
-            </Typography>
-            <Typography noWrap variant="caption">
-              {companyEmail}
-            </Typography>
-          </Box>
-        </Box>
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 90,
-    field: 'total',
-    headerName: 'Tổng',
-    renderCell: ({ row }: CellType) => <Typography variant="body2">{`${formatCurrencyVND(row.total)}`}</Typography>
-  },
-  {
-    flex: 0.15,
-    minWidth: 125,
-    field: 'issuedDate',
-    headerName: 'Ngày phát hành',
-    renderCell: ({ row }: CellType) => <Typography variant="body2">{row.issuedDate}</Typography>
-  },
-  {
-    flex: 0.1,
-    minWidth: 90,
-    field: 'balance',
-    headerName: 'Cần thanh toán',
-    renderCell: ({ row }: CellType) => {
-      return row.balance !== 0 ? (
-        <Typography variant="body2" sx={{ color: 'text.primary' }}>
-          {formatCurrencyVND(row.balance as number)}
-        </Typography>
-      ) : (
-        <CustomChip size="small" skin="light" color="success" label="Paid" />
-      )
-    }
-  },
-  {
-    flex: 0.1,
-    minWidth: 130,
-    sortable: false,
-    field: 'actions',
-    headerName: 'Actions',
-    renderCell: ({ row }: CellType) => (
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-        <Tooltip title="In/tải hóa đơn">
-          <IconButton size="small" component={Link} sx={{ mr: 0.5 }} href={`/invoice/print/${row._id}`}>
-            <Icon icon="mdi:printer" />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Chỉnh sửa">
-          <IconButton size="small" component={Link} sx={{ mr: 0.5 }} href={`/invoice/edit-invoice/${row._id}`}>
-            <Icon icon="mdi:pencil-outline" />
-          </IconButton>
-        </Tooltip>
-      </Box>
-    )
-  }
-]
-
 /* eslint-enable */
 
 const InvoiceListPage = () => {
   // ** State
   const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 })
+  const clipboard = useClipboard()
+
+  const handleCopyPaymentLink = (invoiceId: string) => {
+    const host = typeof window === 'undefined' ? 'localhost:3100' : window.location.host
+    const link = host.includes('localhost')
+      ? `http://${host}/payment/${invoiceId}`
+      : `https://${host}/payment/${invoiceId}`
+
+    clipboard.copy(link)
+    toast.success('Sao chép đường dẫn thanh toán thành công 💵', {
+      id: 'success-cpoy-payment-link'
+    })
+  }
 
   const { isLoading, isRefetching, data, refetch } = useQuery({
     queryKey: ['get-invoices'],
@@ -260,6 +150,174 @@ const InvoiceListPage = () => {
     refetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const defaultColumns: GridColDef[] = [
+    {
+      flex: 0.1,
+      field: 'id',
+      minWidth: 80,
+      headerName: '#',
+      renderCell: ({ row }: CellType) => (
+        <LinkStyled href={`/apps/invoice/preview/${row.id}`}>{`#${row.id}`}</LinkStyled>
+      )
+    },
+    {
+      flex: 0.1,
+      minWidth: 80,
+      field: 'invoiceStatus',
+      headerName: 'Trạng thái',
+      renderCell: ({ row }: CellType) => {
+        const { invoiceStatus } = row
+
+        const color = invoiceStatusObj[invoiceStatus] ? invoiceStatusObj[invoiceStatus].color : 'primary'
+
+        let textStatus = ''
+        switch (invoiceStatus) {
+          case 'paid':
+            textStatus = 'Đã thanh toán'
+            break
+          case 'payment_due':
+            textStatus = 'Chờ thanh toán'
+            break
+          case 'pending':
+            textStatus = 'Đang xử lý'
+            break
+          case 'posted':
+            textStatus = 'Vừa được khởi tạo'
+            break
+          default:
+            break
+        }
+
+        return (
+          <Tooltip
+            title={
+              <div>
+                <Typography variant="caption" sx={{ color: 'common.white', fontWeight: 600 }}>
+                  {textStatus}
+                </Typography>
+                {!isEmpty(row.paidAt) && (
+                  <>
+                    <br />
+                    <Typography variant="caption" sx={{ color: 'common.white', fontWeight: 600 }}>
+                      Ngày thanh toán:
+                    </Typography>{' '}
+                    {dayjs(row.paidAt).format('YYYY-MM-DD')}
+                  </>
+                )}
+              </div>
+            }
+          >
+            <CustomAvatar skin="light" color={color} sx={{ width: 34, height: 34 }}>
+              <Icon icon={invoiceStatusObj[invoiceStatus].icon} fontSize="1.25rem" />
+            </CustomAvatar>
+          </Tooltip>
+        )
+      }
+    },
+    {
+      flex: 0.25,
+      field: 'name',
+      minWidth: 300,
+      headerName: 'Khách hàng',
+      renderCell: (params: GridRenderCellParams) => {
+        const { row } = params
+        const { name, companyEmail } = row
+
+        return (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {renderClient(params)}
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Typography
+                noWrap
+                variant="body2"
+                sx={{ color: 'text.primary', fontWeight: 500, lineHeight: '22px', letterSpacing: '.1px' }}
+              >
+                {name}
+              </Typography>
+              <Typography noWrap variant="caption">
+                {companyEmail}
+              </Typography>
+            </Box>
+          </Box>
+        )
+      }
+    },
+    {
+      flex: 0.1,
+      minWidth: 90,
+      field: 'total',
+      headerName: 'Tổng',
+      renderCell: ({ row }: CellType) => <Typography variant="body2">{`${formatCurrencyVND(row.total)}`}</Typography>
+    },
+    {
+      flex: 0.15,
+      minWidth: 125,
+      field: 'issuedDate',
+      headerName: 'Ngày phát hành',
+      renderCell: ({ row }: CellType) => <Typography variant="body2">{row.issuedDate}</Typography>
+    },
+    {
+      flex: 0.1,
+      minWidth: 90,
+      field: 'balance',
+      headerName: 'Cần thanh toán',
+      renderCell: ({ row }: CellType) => {
+        return row.balance !== 0 ? (
+          <Typography variant="body2" sx={{ color: 'text.primary' }}>
+            {formatCurrencyVND(row.balance as number)}
+          </Typography>
+        ) : (
+          <CustomChip size="small" skin="light" color="success" label="Paid" />
+        )
+      }
+    },
+    {
+      flex: 0.1,
+      minWidth: 130,
+      sortable: false,
+      field: 'actions',
+      headerName: 'Actions',
+      renderCell: ({ row }: CellType) => (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Tooltip title="In/tải hóa đơn">
+            <IconButton
+              color="info"
+              size="small"
+              target="_blank"
+              component={Link}
+              sx={{ mr: 0.5 }}
+              href={`/invoice/print/${row._id}`}
+            >
+              <Icon icon="mdi:printer" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Sao chép link thanh toán">
+            <IconButton color="warning" size="small" sx={{ mr: 0.5 }} onClick={() => handleCopyPaymentLink(row._id)}>
+              <Icon icon="mdi:content-copy" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="in QR thanh toán">
+            <IconButton
+              color="error"
+              target="_blank"
+              size="small"
+              component={Link}
+              sx={{ mr: 0.5 }}
+              href={`/invoice/qr/${row._id}`}
+            >
+              <Icon icon="mdi:qrcode-scan" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip color="success" title="Chỉnh sửa">
+            <IconButton size="small" component={Link} sx={{ mr: 0.5 }} href={`/invoice/edit-invoice/${row._id}`}>
+              <Icon icon="mdi:pencil-outline" />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )
+    }
+  ]
 
   const columns: GridColDef[] = [...defaultColumns]
 

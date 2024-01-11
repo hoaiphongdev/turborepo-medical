@@ -21,7 +21,6 @@ import { isEmpty } from 'lodash'
 
 export interface FormData {
   dateIssues: any
-  paidAt: any
   customerNote?: string
   taxInclude: boolean
   paymentMethod: string
@@ -61,7 +60,6 @@ const FormEditInvoice = ({ invoiceData }: FormEditInvoiceType) => {
 
   const schema = yup.object().shape({
     dateIssues: yup.string().required('Ngày phát hành không được bỏ trống'),
-    paidAt: yup.string().required('Ngày thanh toán không được bỏ trống'),
     customerNote: yup.string(),
     taxInclude: yup.boolean().required(),
     paymentMethod: yup.string().required()
@@ -77,9 +75,6 @@ const FormEditInvoice = ({ invoiceData }: FormEditInvoiceType) => {
       dateIssues: dayjs(invoiceData?.dateIssues)
         .toDate()
         .toString(),
-      paidAt: dayjs(invoiceData?.paidAt)
-        .toDate()
-        .toString(),
       customerNote: isEmpty(invoiceData?.customerNote) ? 'Thank for your bussiness 💘' : invoiceData?.customerNote,
       taxInclude: invoiceData?.priceType === 'tax_inclusive',
       paymentMethod: invoiceData?.paymentMethod
@@ -91,14 +86,14 @@ const FormEditInvoice = ({ invoiceData }: FormEditInvoiceType) => {
   const onSubmit = async (data: FormData) => {
     setIsProcessing(true)
     if (invoiceItems.length === 0) {
-      toast.error('Không thể tạo hóa đơn với không có sản phẩm', {
+      toast.error('Không điều chỉnh hóa đơn với không có sản phẩm', {
         id: 'missing-items'
       })
       return
     }
 
     if (!clientData) {
-      toast.error('Không thể tạo hóa đơn thiếu khách hàng', {
+      toast.error('Không điều chỉnh hóa đơn thiếu khách hàng', {
         id: 'missing-items'
       })
       return
@@ -112,7 +107,7 @@ const FormEditInvoice = ({ invoiceData }: FormEditInvoiceType) => {
       priceType: data?.taxInclude ? 'tax_inclusive' : 'tax_exclusive',
       dateIssues: dayjs(data.dateIssues).format('YYYY-MM-DD'),
       paidOn: dayjs().format('YYYY-MM-DD'),
-      paidAt: dayjs(data.paidAt).format('YYYY-MM-DD'),
+      paidAt: null,
       amountPaid: calculatorPrice(invoiceItems), // Số tiền đã thanh toán
       amountDue: 0, // Số tiền còn lại phải thanh toán
       subTotal: calculatorPrice(invoiceItems),
@@ -209,7 +204,7 @@ const FormEditInvoice = ({ invoiceData }: FormEditInvoiceType) => {
       priceType: data?.taxInclude ? 'tax_inclusive' : 'tax_exclusive',
       dateIssues: dayjs(data.dateIssues).format('YYYY-MM-DD'),
       paidOn: dayjs().format('YYYY-MM-DD'),
-      paidAt: dayjs(data.paidAt).format('YYYY-MM-DD'),
+      paidAt: null,
       amountPaid: 0, // Số tiền đã thanh toán
       amountDue: calculatorPrice(invoiceItems), // Số tiền còn lại phải thanh toán
       subTotal: calculatorPrice(invoiceItems),
@@ -302,7 +297,7 @@ const FormEditInvoice = ({ invoiceData }: FormEditInvoiceType) => {
       priceType: data?.taxInclude ? 'tax_inclusive' : 'tax_exclusive',
       dateIssues: dayjs(data.dateIssues).format('YYYY-MM-DD'),
       paidOn: dayjs().format('YYYY-MM-DD'),
-      paidAt: dayjs(data.paidAt).format('YYYY-MM-DD'),
+      paidAt: dayjs().format('YYYY-MM-DD'),
       amountPaid: calculatorPrice(invoiceItems), // Số tiền đã thanh toán
       amountDue: 0, // Số tiền còn lại phải thanh toán
       subTotal: calculatorPrice(invoiceItems),

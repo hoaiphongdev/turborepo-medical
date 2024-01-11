@@ -1,18 +1,14 @@
 import {
+  Autocomplete,
   Box,
   Button,
-  Card,
-  CardContent,
   FormControl,
   FormControlLabel,
   FormHelperText,
   Grid,
   IconButton,
-  InputLabel,
   List,
   ListItem,
-  MenuItem,
-  OutlinedInput,
   Switch,
   TextField,
   Typography,
@@ -20,62 +16,64 @@ import {
   styled
 } from '@mui/material'
 import React, { useState } from 'react'
-import Select from '@mui/material/Select'
 // ** Third Party Imports
 import * as yup from 'yup'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import dynamic from 'next/dynamic'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import 'draft-js/dist/Draft.css'
 import { useDropzone } from 'react-dropzone'
 import { Icon } from '@iconify/react'
 import DropzoneWrapper from '@core/styles/libs/react-dropzone'
 import toast from 'react-hot-toast'
-//
+import { api } from 'configs/api.endpoint'
+import axios from 'axios'
+import { useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
 
-const ReactDraftWysiwyg = dynamic(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
-  ssr: false
-})
 interface FileProp {
   name: string
   type: string
   size: number
 }
-const AddNewProductFormContainer = () => {
-  const [files, setFiles] = useState<File[]>([])
+type Props = {
+  categoryId?: string
+  imageList?: Array<any>
+  isEdit?: boolean
+  productId?: any
+  defaultValues?: {
+    name: string
+    category: string
+    quantity: number
+    basePrice: number
+    salePrice: number
+    inStock?: boolean
+    status?: boolean
+    description?: string
+  }
+}
+const AddNewProductFormContainer = (props: Props) => {
+  const { defaultValues, imageList = [], isEdit = false, productId } = props
+  const [files, setFiles] = useState<File[]>(imageList)
+  const [categories, setCategories] = useState([])
+  const router = useRouter()
   const schema = yup.object().shape({
     name: yup.string().required('Không được bỏ trống tên sản phẩm'),
-    skuProduct: yup.string().required('Không được bỏ trống mã SKU'),
     category: yup.string().required('Không được bỏ trống danh mục sản phẩm'),
-    quantity: yup
-      .number()
-      .required('Không được bỏ trống số lượng sản phẩm')
-      .min(1, 'Số lượng thấp nhất là 1')
-      .typeError('Không được bỏ trống số lượng sản phẩm'),
-    price: yup
+    basePrice: yup
       .number()
       .required('Không được bỏ trống giá sản phẩm')
       .min(1, 'Giá thấp nhất là 1')
       .typeError('Không được bỏ trống giá sản phẩm'),
-    productDiscountPrice: yup
+    salePrice: yup
       .number()
       .min(1, 'Giá thấp nhất là 1')
       .required('Không được bỏ trống giá sản phẩm')
-      .lessThan(yup.ref('price'), 'Giá giảm không được lớn hơn và bằng giá gốc')
+      .lessThan(yup.ref('basePrice'), 'Giá giảm không được lớn hơn và bằng giá gốc')
       .typeError('Giá thấp nhất là 1'),
-    // avatar: yup.mixed().test('fileType', 'Ảnh sản phẩm không hợp lệ', (value) => {
-    //   // @ts-ignore
-    //   if (!value || !value[0]) {
-    //     return true
-    //   }
-    //   const allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp']
-    //   // @ts-ignore
-    //   const extension = value[0].name.split('.').pop()?.toLowerCase()
-    //   return extension ? allowedExtensions.includes(extension) : false
-    // }),
     inStock: yup.boolean(),
-    desc: yup.object()
+    status: yup.boolean(),
+    description: yup.string()
   })
   const { getRootProps, getInputProps } = useDropzone({
     maxFiles: 2,
@@ -96,13 +94,12 @@ const AddNewProductFormContainer = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors }
+    formState: { errors, isSubmitting }
   } = useForm({
-    // defaultValues,
+    defaultValues,
     mode: 'onChange',
     resolver: yupResolver(schema)
   })
-
   // Styled component for the upload image inside the dropzone area // NO IMPORTANT -- JUST UI
   const Img = styled('img')(({ theme }) => ({
     [theme.breakpoints.up('md')]: {
@@ -122,9 +119,11 @@ const AddNewProductFormContainer = () => {
       marginBottom: theme.spacing(4)
     }
   }))
-  const renderFilePreview = (file: FileProp) => {
-    if (file.type.startsWith('image')) {
+  const renderFilePreview = (file: any) => {
+    if (file?.type?.startsWith('image')) {
       return <img width={38} height={38} alt={file.name} src={URL.createObjectURL(file as any)} />
+    } else if (typeof file === 'string' && isEdit) {
+      return <img width={38} height={38} alt={file} src={file} />
     } else {
       return <Icon icon="mdi:file-document-outline" />
     }
@@ -136,14 +135,63 @@ const AddNewProductFormContainer = () => {
     setFiles([...filtered])
   }
 
-  const onSubmit = (data: any) => {
-    console.log('data', data)
+  const onSubmit = async (data: any) => {
+    let imageUrl = null
+    if (files) {
+      const formData = new FormData()
+      formData.append('image', files[0])
+      formData.append('width', '128')
+      formData.append('height', '128')
+      try {
+        const responseUpload = await axios.post(`${api.CLOUD}/upload-image`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+        imageUrl = responseUpload.data.data
+      } catch (error) {
+        console.error('Error uploading image:', error)
+        // Handle error as needed
+      }
+    }
 
-    // const payload = {
-    //   ...data,
-    //   desc: draftToHtml(convertToRaw(data.desc.getCurrentContent()))
-    // }
+    const payload = {
+      ...data,
+      quantity: 1,
+      images: imageUrl ?? [],
+      status: data?.status ? 'publish' : 'draft'
+    }
+    try {
+      let message = ''
+      let createProduct
+      if (!isEdit) {
+        message = 'Tạo sản phẩm thành công'
+        createProduct = await axios.post(`${api.PRODUCT}`, payload)
+      } else {
+        message = 'Chỉnh sửa sản phẩm thành công'
+        createProduct = await axios.put(`${api.PRODUCT}/${productId}`, payload)
+      }
+      // const createProduct = await axios.post(`${api.PRODUCT}`, payload)
+      if (createProduct?.data?.isSuccess) {
+        toast.success(message, { id: 'success-process-category' })
+        router.replace('/products', undefined, { shallow: false })
+      }
+    } catch (error) {
+      toast.error('Server đang bận, vui lòng thử lại sau!', {
+        id: 'error-add-category'
+      })
+    }
   }
+
+  const { isLoading } = useQuery({
+    queryKey: ['get-categories'],
+    queryFn: async () => {
+      const response = await axios.get(`${api.CATEGORY}`)
+      setCategories(response?.data?.data?.records)
+    }
+  })
+
+  if (isLoading) return <Typography variant="body1">Loading</Typography>
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -152,6 +200,7 @@ const AddNewProductFormContainer = () => {
             1. Thông tin sản phẩm
           </Typography>
         </Grid>
+
         <Grid container spacing={5}>
           <Grid item xs={12}>
             <FormControl fullWidth>
@@ -179,35 +228,37 @@ const AddNewProductFormContainer = () => {
           </Grid>
           <Grid item xs={12}>
             <FormControl fullWidth>
-              <InputLabel error={Boolean(errors.category)} id="select-product-category">
-                Danh mục
-              </InputLabel>
               <Controller
                 name="category"
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) => {
                   return (
-                    <Select
-                      //   multiple
-                      value={field.value}
-                      error={Boolean(errors.category)}
-                      onChange={(e) => field.onChange(e.target.value)}
-                      id="form-layouts-separator-multiple-select"
-                      labelId="select-product-category"
-                      input={<OutlinedInput label="category" id="select-multiple-category" />}
-                    >
-                      <MenuItem value="English">English</MenuItem>
-                      <MenuItem value="French">French</MenuItem>
-                      <MenuItem value="Spanish">Spanish</MenuItem>
-                      <MenuItem value="Portuguese">Portuguese</MenuItem>
-                      <MenuItem value="Italian">Italian</MenuItem>
-                      <MenuItem value="German">German</MenuItem>
-                      <MenuItem value="Arabic">Arabic</MenuItem>
-                    </Select>
+                    <Autocomplete
+                      fullWidth
+                      disablePortal
+                      id="combo-box-demo"
+                      options={categories}
+                      sx={{ width: '100%' }} // Chắc chắn đặt width là '100%'
+                      getOptionLabel={(option: any) => option.name} // Lấy giá trị hiển thị từ đối tượng
+                      renderInput={(params) => <TextField {...params} label="Danh mục" />}
+                      value={categories.find((item: any) => item._id === field.value) || null}
+                      onChange={(_, newValue) => field.onChange(newValue ? newValue._id : null)}
+                    />
                   )
                 }}
               />
+              {/* <Controller
+                name="category" // Tên của field trong form
+                control={control}
+                // defaultValue={''} // Giá trị mặc định của SelectCategory
+                render={({ field }) => (
+                  <SelectCategory
+                    categoryId={categoryId}
+                    handleSelectCategory={(selectedCategory) => field.onChange(selectedCategory?._id)}
+                  />
+                )}
+              /> */}
 
               {errors.category && (
                 <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-category">
@@ -216,75 +267,31 @@ const AddNewProductFormContainer = () => {
               )}
             </FormControl>
           </Grid>
+
           <Grid item xs={12}>
             <FormControl fullWidth>
               <Controller
-                name="skuProduct"
+                name="description"
                 control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <TextField
-                    value={value}
-                    label="Mã SKU"
-                    onChange={onChange}
-                    placeholder="Ex: SKU1101122220"
-                    error={Boolean(errors.skuProduct)}
-                    aria-describedby="validation-schema-skuProduct"
-                  />
-                )}
-              />
-              {errors.skuProduct && (
-                <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-skuProduct">
-                  {errors.skuProduct.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <FormControl fullWidth>
-              <Controller
-                name="quantity"
-                control={control}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
-                  <TextField
-                    value={value}
-                    label="Số lượng sản phẩm"
-                    onChange={onChange}
-                    placeholder="1200"
-                    error={Boolean(errors.quantity)}
-                    aria-describedby="validation-schema-quantity"
-                  />
-                )}
-              />
-              {errors.quantity && (
-                <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-quantity">
-                  {errors.quantity.message}
-                </FormHelperText>
-              )}
-            </FormControl>
-          </Grid>
-          <Grid item xs={12}>
-            <FormControl>
-              <Controller
-                name="desc"
-                control={control}
-                render={({ field }) => {
+                render={({ field: { value, onChange } }) => {
                   return (
-                    <Card variant="outlined">
-                      <CardContent>
-                        <ReactDraftWysiwyg
-                          editorState={field.value as any} // wire up the value
-                          onEditorStateChange={field.onChange} // send data with the onChagne
-                        />
-                      </CardContent>
-                    </Card>
+                    <TextField
+                      fullWidth
+                      multiline
+                      minRows={4}
+                      value={value}
+                      label="Mô tả sản phẩm"
+                      onChange={onChange}
+                      placeholder="1200"
+                      error={Boolean(errors.description)}
+                      aria-describedby="validation-schema-description"
+                    />
                   )
                 }}
               />
-              {errors.desc && (
-                <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-desc">
-                  {errors.desc.message}
+              {errors.description && (
+                <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-description">
+                  {errors.description.message}
                 </FormHelperText>
               )}
             </FormControl>
@@ -311,12 +318,14 @@ const AddNewProductFormContainer = () => {
                         <div className="file-details">
                           <div className="file-preview">{renderFilePreview(file)}</div>
                           <div>
-                            <Typography className="file-name">{file.name}</Typography>
-                            <Typography className="file-size" variant="body2">
-                              {Math.round(file.size / 100) / 10 > 1000
-                                ? `${(Math.round(file.size / 100) / 10000).toFixed(1)} mb`
-                                : `${(Math.round(file.size / 100) / 10).toFixed(1)} kb`}
-                            </Typography>
+                            <Typography className="file-name">{file.name ?? file}</Typography>
+                            {!isEdit && (
+                              <Typography className="file-size" variant="body2">
+                                {Math.round(file.size / 100) / 10 > 1000
+                                  ? `${(Math.round(file.size / 100) / 10000).toFixed(1)} mb`
+                                  : `${(Math.round(file.size / 100) / 10).toFixed(1)} kb`}
+                              </Typography>
+                            )}
                           </div>
                         </div>
                         <IconButton onClick={() => handleRemoveFile(file)}>
@@ -338,7 +347,7 @@ const AddNewProductFormContainer = () => {
           <Grid item xs={12}>
             <FormControl fullWidth>
               <Controller
-                name="price"
+                name="basePrice"
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange } }) => (
@@ -348,14 +357,14 @@ const AddNewProductFormContainer = () => {
                     label="Giá gốc"
                     onChange={onChange}
                     placeholder="Ex: 50000"
-                    error={Boolean(errors.price)}
-                    aria-describedby="validation-schema-price"
+                    error={Boolean(errors.basePrice)}
+                    aria-describedby="validation-schema-basePrice"
                   />
                 )}
               />
-              {errors.price && (
-                <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-price">
-                  {errors.price.message}
+              {errors.basePrice && (
+                <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-basePrice">
+                  {errors.basePrice.message}
                 </FormHelperText>
               )}
             </FormControl>
@@ -363,7 +372,7 @@ const AddNewProductFormContainer = () => {
           <Grid item xs={12}>
             <FormControl fullWidth>
               <Controller
-                name="productDiscountPrice"
+                name="salePrice"
                 control={control}
                 rules={{ required: true }}
                 render={({ field: { value, onChange } }) => (
@@ -373,14 +382,14 @@ const AddNewProductFormContainer = () => {
                     label="Giá giảm (giá bán chính thức)"
                     onChange={onChange}
                     placeholder="Ex: 25000"
-                    error={Boolean(errors.productDiscountPrice)}
-                    aria-describedby="validation-schema-productDiscountPrice"
+                    error={Boolean(errors.salePrice)}
+                    aria-describedby="validation-schema-salePrice"
                   />
                 )}
               />
-              {errors.productDiscountPrice && (
-                <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-productDiscountPrice">
-                  {errors.productDiscountPrice.message}
+              {errors.salePrice && (
+                <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-salePrice">
+                  {errors.salePrice.message}
                 </FormHelperText>
               )}
             </FormControl>
@@ -389,20 +398,38 @@ const AddNewProductFormContainer = () => {
             <Controller
               name="inStock"
               control={control}
+              render={({ field: { value, onChange } }) => {
+                return (
+                  <FormControlLabel
+                    sx={{
+                      marginLeft: 0
+                    }}
+                    label="Sản phẩm còn hàng: "
+                    labelPlacement="start"
+                    control={<Switch defaultChecked={value} value={value} onChange={onChange} />}
+                  />
+                )
+              }}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="status"
+              control={control}
               render={({ field: { value, onChange } }) => (
                 <FormControlLabel
                   sx={{
                     marginLeft: 0
                   }}
-                  label="Sản phẩm còn hàng: "
+                  label="Publish sản phẩm: "
                   labelPlacement="start"
-                  control={<Switch value={value} onChange={onChange} />}
+                  control={<Switch defaultChecked={value} value={value} onChange={onChange} />}
                 />
               )}
             />
           </Grid>
           <Grid item xs={12}>
-            <Button size="large" type="submit" variant="contained">
+            <Button disabled={isSubmitting} size="large" type="submit" variant="contained">
               Submit
             </Button>
           </Grid>

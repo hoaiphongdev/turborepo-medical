@@ -25,7 +25,6 @@ import { useRouter } from 'next/router'
 
 export interface FormData {
   dateIssues: string
-  paidAt: string
   customerNote?: string
   taxInclude: boolean
   paymentMethod: string
@@ -45,7 +44,6 @@ const InvoiceAddPage = () => {
 
   const schema = yup.object().shape({
     dateIssues: yup.string().required('Ngày phát hành không được bỏ trống'),
-    paidAt: yup.string().required('Ngày thanh toán không được bỏ trống'),
     customerNote: yup.string(),
     taxInclude: yup.boolean().required(),
     paymentMethod: yup.string().required()
@@ -90,7 +88,7 @@ const InvoiceAddPage = () => {
       priceType: data?.taxInclude ? 'tax_inclusive' : 'tax_exclusive',
       dateIssues: dayjs(data.dateIssues).format('YYYY-MM-DD'),
       paidOn: dayjs().format('YYYY-MM-DD'),
-      paidAt: dayjs(data.paidAt).format('YYYY-MM-DD'),
+      paidAt: null,
       amountPaid: 0, // Số tiền đã thanh toán
       amountDue: calculatorPrice(invoiceItems), // Số tiền còn lại phải thanh toán
       subTotal: calculatorPrice(invoiceItems),
@@ -187,7 +185,7 @@ const InvoiceAddPage = () => {
       priceType: data?.taxInclude ? 'tax_inclusive' : 'tax_exclusive',
       dateIssues: dayjs(data.dateIssues).format('YYYY-MM-DD'),
       paidOn: dayjs().format('YYYY-MM-DD'),
-      paidAt: dayjs(data.paidAt).format('YYYY-MM-DD'),
+      paidAt: null,
       amountPaid: 0, // Số tiền đã thanh toán
       amountDue: calculatorPrice(invoiceItems), // Số tiền còn lại phải thanh toán
       subTotal: calculatorPrice(invoiceItems),
@@ -280,7 +278,7 @@ const InvoiceAddPage = () => {
       priceType: data?.taxInclude ? 'tax_inclusive' : 'tax_exclusive',
       dateIssues: dayjs(data.dateIssues).format('YYYY-MM-DD'),
       paidOn: dayjs().format('YYYY-MM-DD'),
-      paidAt: dayjs(data.paidAt).format('YYYY-MM-DD'),
+      paidAt: dayjs().format('YYYY-MM-DD'),
       amountPaid: 0, // Số tiền đã thanh toán
       amountDue: calculatorPrice(invoiceItems), // Số tiền còn lại phải thanh toán
       subTotal: calculatorPrice(invoiceItems),
