@@ -28,13 +28,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import dynamic from 'next/dynamic'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 import 'draft-js/dist/Draft.css'
-import { convertToRaw } from 'draft-js'
 import { useDropzone } from 'react-dropzone'
 import { Icon } from '@iconify/react'
 import DropzoneWrapper from '@core/styles/libs/react-dropzone'
 import toast from 'react-hot-toast'
 //
-import draftToHtml from 'draftjs-to-html'
 
 const ReactDraftWysiwyg = dynamic(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), {
   ssr: false
@@ -139,11 +137,12 @@ const AddNewProductFormContainer = () => {
   }
 
   const onSubmit = (data: any) => {
-    const payload = {
-      ...data,
-      desc: draftToHtml(convertToRaw(data.desc.getCurrentContent()))
-    }
-    console.log('payload', payload)
+    console.log('data', data)
+
+    // const payload = {
+    //   ...data,
+    //   desc: draftToHtml(convertToRaw(data.desc.getCurrentContent()))
+    // }
   }
   return (
     <div>

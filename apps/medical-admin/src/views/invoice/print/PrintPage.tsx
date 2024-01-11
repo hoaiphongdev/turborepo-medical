@@ -22,6 +22,7 @@ import themeConfig from 'configs/themeConfig'
 import MedicalIcon from '@core/components/medical-icon'
 import { formatCurrencyVND } from 'core'
 import dayjs from 'dayjs'
+import { isEmpty } from 'lodash'
 
 const CalcWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   display: 'flex',
@@ -93,14 +94,16 @@ const InvoicePrintPage = ({ invoiceData }: InvoicePrintPage) => {
                   {dayjs(invoiceData.dateIssues).format('YYYY-MM-DD')}
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex' }}>
-                <Typography variant="body2" sx={{ mr: 1 }}>
-                  Ngày thanh toán:
-                </Typography>
-                <Typography variant="body2" sx={{ fontWeight: 600 }}>
-                  {dayjs(invoiceData.paidAt).format('YYYY-MM-DD')}
-                </Typography>
-              </Box>
+              {!isEmpty(invoiceData.paidAt) && (
+                <Box sx={{ display: 'flex' }}>
+                  <Typography variant="body2" sx={{ mr: 1 }}>
+                    Ngày thanh toán:
+                  </Typography>
+                  <Typography variant="body2" sx={{ fontWeight: 600 }}>
+                    {dayjs(invoiceData.paidAt).format('YYYY-MM-DD')}
+                  </Typography>
+                </Box>
+              )}
             </Box>
           </Grid>
         </Grid>
@@ -159,7 +162,6 @@ const InvoicePrintPage = ({ invoiceData }: InvoicePrintPage) => {
           <TableHead>
             <TableRow>
               <TableCell>Sản phẩm</TableCell>
-              <TableCell>Mô tả</TableCell>
               <TableCell>Đơn giá</TableCell>
               <TableCell>Số lượng</TableCell>
               <TableCell>Tổng</TableCell>
@@ -170,7 +172,6 @@ const InvoicePrintPage = ({ invoiceData }: InvoicePrintPage) => {
               return (
                 <TableRow key={item._id}>
                   <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.note}</TableCell>
                   <TableCell>{formatCurrencyVND(item.price)}</TableCell>
                   <TableCell>{item.quantity}</TableCell>
                   <TableCell>{formatCurrencyVND(item.amount)}</TableCell>
@@ -180,7 +181,7 @@ const InvoicePrintPage = ({ invoiceData }: InvoicePrintPage) => {
           </TableBody>
         </Table>
 
-        <Grid container>
+        <Grid container sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <Grid item xs={4} sm={5} lg={3}>
             <CalcWrapper>
               <Typography variant="body2">Tạm tính:</Typography>

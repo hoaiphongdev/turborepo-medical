@@ -231,32 +231,6 @@ const AddCard = (props: AddCardProps) => {
                   )}
                 </Grid>
               </Box>
-              <Box sx={{ display: 'flex' }}>
-                <Typography variant="body2" sx={{ mr: 2, width: '200px' }}>
-                  Ngày thanh toán (*):
-                </Typography>
-                <Grid item xs={12}>
-                  <Controller
-                    name="paidAt"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field: { value, onChange } }) => (
-                      <DatePicker
-                        id="due-date"
-                        minDate={new Date()}
-                        selected={dayjs(value).toDate()}
-                        customInput={<CustomInput />}
-                        onChange={onChange}
-                      />
-                    )}
-                  />
-                  {errors.paidAt && (
-                    <FormHelperText sx={{ color: 'error.main' }} id="validation-schema-name">
-                      {errors.paidAt.message}
-                    </FormHelperText>
-                  )}
-                </Grid>
-              </Box>
             </Box>
           </Grid>
         </Grid>
