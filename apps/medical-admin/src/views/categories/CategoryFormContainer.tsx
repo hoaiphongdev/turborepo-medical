@@ -131,7 +131,6 @@ const CategoryFormContainer = (props: CategoryFormContainerProps) => {
 
     setIsProcessing(false)
   }
-
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
