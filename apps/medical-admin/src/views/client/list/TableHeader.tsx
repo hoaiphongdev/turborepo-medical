@@ -17,7 +17,7 @@ const TableHeader = () => {
       }}
     >
       <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center' }}>
-        <Button sx={{ mb: 2 }} component={Link} variant="contained" href="/invoice/create-invoice">
+        <Button sx={{ mb: 2 }} component={Link} variant="contained" href="/client/create">
           Tạo khách hàng (nhà thuốc/bệnh viện) mới
         </Button>
       </Box>
