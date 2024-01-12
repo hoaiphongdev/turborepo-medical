@@ -68,10 +68,10 @@ const EcommerceSalesThisMonth = () => {
     <Card>
       <CardContent sx={{ pb: '0 !important' }}>
         <Typography variant="h6" sx={{ mb: 2.5 }}>
-          Sales this Month
+         Tổng quan doanh thu tháng này
         </Typography>
-        <Typography variant="body2">Total Sales This Month</Typography>
-        <Typography variant="h6">$28,450</Typography>
+        <Typography variant="body2">Doanh thu ước tính</Typography>
+        <Typography variant="h6">689.236.110đ</Typography>
 
         <ReactApexcharts type="line" height={115} options={options} series={series} />
       </CardContent>

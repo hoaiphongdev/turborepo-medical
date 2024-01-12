@@ -1,5 +1,4 @@
 import { SyntheticEvent, useState } from 'react'
-import Box from '@mui/material/Box'
 import Tab from '@mui/material/Tab'
 import Card from '@mui/material/Card'
 import TabList from '@mui/lab/TabList'
@@ -14,12 +13,9 @@ import TableHead from '@mui/material/TableHead'
 import CardHeader from '@mui/material/CardHeader'
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
-import Icon from '@core/components/icon'
 
 import { ThemeColor } from 'config-mui'
 import CustomChip from '@core/components/mui/chip'
-import OptionsMenu from '@core/components/option-menu'
-import { hexToRGBA } from 'core'
 
 interface StatusObj {
   [ke: string]: {
@@ -45,9 +41,9 @@ interface TabContentType {
 }
 
 interface TabContentDataType {
-  mobile: TabContentType[]
-  desktop: TabContentType[]
-  console: TabContentType[]
+  pill: TabContentType[]
+  tools: TabContentType[]
+  beauty: TabContentType[]
 }
 
 const statusObj: StatusObj = {
@@ -60,100 +56,101 @@ const tabAvatars: TabAvatarType[] = [
   {
     imgWidth: 30,
     imgHeight: 58,
-    category: 'mobile'
+    category: 'pill'
   },
   {
     imgWidth: 52,
     imgHeight: 42,
-    category: 'desktop'
+    category: 'tools'
   },
   {
     imgWidth: 60,
     imgHeight: 42,
-    category: 'console'
+    category: 'beauty'
   }
 ]
 
 const tabContentData: TabContentDataType = {
-  mobile: [
+  pill: [
     {
-      revenue: '$12.5k',
+      revenue: '892.421.000đ',
       conversion: '+24',
       imgAlt: 'samsung-s22',
       status: 'out-of-stock',
-      product: 'Samsung s22',
-      imgSrc: '/images/cards/samsung-s22.png'
+      product: 'Viên sủi Effer',
+      imgSrc: '/images/pills/1.jpg'
     },
     {
-      revenue: '$45k',
+      revenue: '432.121.000đ',
       conversion: '-18',
       status: 'in-stock',
       imgAlt: 'apple-iPhone-13-pro',
-      product: 'Apple iPhone 13 Pro',
+      product: 'Panadol',
       conversionDifference: 'negative',
-      imgSrc: '/images/cards/apple-iPhone-13-pro.png'
+      imgSrc: '/images/pills/2.jpg'
     },
     {
-      revenue: '$98.2k',
+      revenue: '552.121.000đ',
       conversion: '+55',
-      status: 'coming-soon',
-      imgAlt: 'oneplus-9-pro',
-      product: 'Oneplus 9 Pro',
-      imgSrc: '/images/cards/oneplus-9-pro.png'
-    }
-  ],
-  desktop: [
-    {
-      revenue: '$94.6k',
-      conversion: '+16',
       status: 'in-stock',
-      imgAlt: 'apple-mac-mini',
-      product: 'Apple Mac Mini',
-      imgSrc: '/images/cards/apple-mac-mini.png'
-    },
-    {
-      revenue: '$76.5k',
-      conversion: '+27',
-      status: 'coming-soon',
-      imgAlt: 'hp-envy-x360',
-      product: 'Newest HP Envy x360',
-      imgSrc: '/images/cards/hp-envy-x360.png'
-    },
-    {
-      revenue: '$69.3k',
-      conversion: '-9',
-      status: 'out-of-stock',
-      imgAlt: 'dell-inspiron-3000',
-      product: 'Dell Inspiron 3000',
-      conversionDifference: 'negative',
-      imgSrc: '/images/cards/dell-inspiron-3000.png'
+      imgAlt: 'oneplus-9-pro',
+      product: 'Leana Octavill',
+      imgSrc: '/images/pills/3.jpg'
     }
   ],
-  console: [
+  tools: [
     {
-      revenue: '$18.6k',
-      conversion: '+34',
-      status: 'coming-soon',
-      imgAlt: 'sony-play-station-5',
-      product: 'Sony Play Station 5',
-      imgSrc: '/images/cards/sony-play-station-5.png'
+      revenue: '521.123.531đ',
+      conversion: '+2',
+      imgAlt: 'samsung-s22',
+      status: 'in-stock',
+      product: 'Nẹp',
+      imgSrc: '/images/pills/4.jpg'
     },
     {
-      revenue: '$29.7k',
+      revenue: '444.121.112đ',
+      conversion: '-18',
+      status: 'in-stock',
+      imgAlt: 'apple-iPhone-13-pro',
+      product: 'Máy đo huyết áp',
+      conversionDifference: 'negative',
+      imgSrc: '/images/pills/5.jpg'
+    },
+    {
+      revenue: '178.213.000đ',
+      conversion: '-9',
+      status: 'in-stock',
+      imgAlt: 'oneplus-9-pro',
+      product: 'Bình dưỡng khí',
+      conversionDifference: 'negative',
+      imgSrc: '/images/pills/6.jpg'
+    }
+  ],
+  beauty: [
+    {
+      revenue: '1.234.556.212đ',
+      conversion: '+67',
+      status: 'out-of-stock',
+      imgAlt: 'sony-play-station-5',
+      product: 'Whey Protein',
+      imgSrc: '/images/pills/7.jpg'
+    },
+    {
+      revenue: '342.235.780đ',
       conversion: '-21',
       status: 'out-of-stock',
       imgAlt: 'xbox-series-x',
-      product: 'XBOX Series X',
+      product: 'Mặt nạ',
       conversionDifference: 'negative',
-      imgSrc: '/images/cards/xbox-series-x.png'
+      imgSrc: '/images/pills/8.jpg'
     },
     {
-      revenue: '$10.4k',
+      revenue: '141.789.553đ',
       conversion: '+38',
       status: 'in-stock',
       imgAlt: 'nintendo-switch',
-      product: 'Nintendo Switch',
-      imgSrc: '/images/cards/nintendo-switch.png'
+      product: 'Sữa dưỡng ẩm',
+      imgSrc: '/images/pills/9.jpg'
     }
   ]
 }
@@ -164,11 +161,11 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
       <Table>
         <TableHead>
           <TableRow sx={{ '& .MuiTableCell-root': { py: (theme) => `${theme.spacing(2.5)} !important` } }}>
-            <TableCell>Image</TableCell>
-            <TableCell sx={{ whiteSpace: 'nowrap' }}>Product Name</TableCell>
-            <TableCell align="right">Status</TableCell>
-            <TableCell align="right">Revenue</TableCell>
-            <TableCell align="right">Conversion</TableCell>
+            <TableCell>Hình ảnh</TableCell>
+            <TableCell sx={{ whiteSpace: 'nowrap' }}>Sản phẩm</TableCell>
+            <TableCell align='right'>Trạng thái</TableCell>
+            <TableCell align='right'>Nguồn thu</TableCell>
+            <TableCell align='right'>Conversion</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -189,11 +186,15 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
               }}
             >
               <TableCell>
-                <Avatar alt={row.imgAlt} src={row.imgSrc} variant="rounded" sx={{ width: 34, height: 34 }} />
+                <Avatar
+                  alt={row.imgAlt}
+                  src={row.imgSrc}
+                  variant='rounded'
+                  sx={{ width: 34, height: 34 }} />
               </TableCell>
               <TableCell>
                 <Typography
-                  variant="body2"
+                  variant='body2'
                   sx={{
                     fontWeight: 600,
                     whiteSpace: 'nowrap',
@@ -203,10 +204,10 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
                   {row.product}
                 </Typography>
               </TableCell>
-              <TableCell align="right">
+              <TableCell align='right'>
                 <CustomChip
-                  skin="light"
-                  size="small"
+                  skin='light'
+                  size='small'
                   label={statusObj[row.status].text}
                   color={statusObj[row.status].color}
                   sx={{
@@ -218,7 +219,7 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
               </TableCell>
               <TableCell>
                 <Typography
-                  variant="body2"
+                  variant='body2'
                   sx={{
                     fontWeight: 600,
                     textAlign: 'right',
@@ -231,7 +232,7 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
               </TableCell>
               <TableCell>
                 <Typography
-                  variant="body2"
+                  variant='body2'
                   sx={{
                     fontWeight: 600,
                     textAlign: 'right',
@@ -249,7 +250,7 @@ const RenderTabContent = ({ data }: { data: TabContentType[] }) => {
 
 const EcommerceSalesOverviewWithTabs = () => {
   // ** State
-  const [value, setValue] = useState<string>('mobile')
+  const [value, setValue] = useState<string>('pill')
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue)
@@ -257,14 +258,14 @@ const EcommerceSalesOverviewWithTabs = () => {
 
   const RenderTabAvatar = ({ data }: { data: TabAvatarType }) => (
     <Avatar
-      variant="rounded"
+      variant='rounded'
       alt={`tabs-${data.category}`}
-      src={`/images/cards/tabs-${data.category}.png`}
+      src={`/images/categories/${data.category}.png`}
       sx={{
         width: 100,
         height: 92,
         backgroundColor: 'transparent',
-        '& img': { width: data.imgWidth, height: data.imgHeight },
+        '& img': { width: '40px', height: '40px' },
         border: (theme) =>
           value === data.category ? `2px solid ${theme.palette.primary.main}` : `2px dashed ${theme.palette.divider}`
       }}
@@ -274,21 +275,15 @@ const EcommerceSalesOverviewWithTabs = () => {
   return (
     <Card>
       <CardHeader
-        title="Top Referral Sources"
-        subheader="82% Activity Growth"
-        action={
-          <OptionsMenu
-            options={['Last 28 Days', 'Last Month', 'Last Year']}
-            iconButtonProps={{ size: 'small', className: 'card-more-options' }}
-          />
-        }
+        title='Sản phẩm được tương tác cao'
+        subheader='82% tổng giá trị doanh thu'
       />
       <TabContext value={value}>
         <TabList
-          variant="scrollable"
-          scrollButtons="auto"
+          variant='scrollable'
+          scrollButtons='auto'
           onChange={handleChange}
-          aria-label="top referral sources tabs"
+          aria-label='top referral sources tabs'
           sx={{
             mb: 2.5,
             px: 5,
@@ -296,51 +291,34 @@ const EcommerceSalesOverviewWithTabs = () => {
             '& .MuiTabs-indicator': { display: 'none' }
           }}
         >
-          <Tab value="mobile" sx={{ p: 0 }} label={<RenderTabAvatar data={tabAvatars[0]} />} />
-          <Tab value="desktop" sx={{ p: 0 }} label={<RenderTabAvatar data={tabAvatars[1]} />} />
-          <Tab value="console" sx={{ p: 0 }} label={<RenderTabAvatar data={tabAvatars[2]} />} />
           <Tab
-            disabled
-            value="add"
+            value='pill'
             sx={{ p: 0 }}
-            label={
-              <Avatar
-                variant="rounded"
-                sx={{
-                  width: 100,
-                  height: 92,
-                  backgroundColor: 'transparent',
-                  border: (theme) =>
-                    value === 'add' ? `2px solid ${theme.palette.primary.main}` : `2px dashed ${theme.palette.divider}`
-                }}
-              >
-                <Box
-                  sx={{
-                    width: 30,
-                    height: 30,
-                    display: 'flex',
-                    borderRadius: '8px',
-                    alignItems: 'center',
-                    color: 'action.active',
-                    justifyContent: 'center',
-                    backgroundColor: (theme) => hexToRGBA(theme.palette.secondary.main, 0.12)
-                  }}
-                >
-                  <Icon icon="mdi:plus" />
-                </Box>
-              </Avatar>
-            }
-          />
+            label={<RenderTabAvatar data={tabAvatars[0]} />} />
+          <Tab
+            value='tools'
+            sx={{ p: 0 }}
+            label={<RenderTabAvatar data={tabAvatars[1]} />} />
+          <Tab
+            value='beauty'
+            sx={{ p: 0 }}
+            label={<RenderTabAvatar data={tabAvatars[2]} />} />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value="mobile">
-          <RenderTabContent data={tabContentData['mobile']} />
+        <TabPanel
+          sx={{ p: 0 }}
+          value='pill'>
+          <RenderTabContent data={tabContentData['pill']} />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="desktop">
-          <RenderTabContent data={tabContentData['desktop']} />
+        <TabPanel
+          sx={{ p: 0 }}
+          value='tools'>
+          <RenderTabContent data={tabContentData['tools']} />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="console">
-          <RenderTabContent data={tabContentData['console']} />
+        <TabPanel
+          sx={{ p: 0 }}
+          value='beauty'>
+          <RenderTabContent data={tabContentData['beauty']} />
         </TabPanel>
       </TabContext>
     </Card>
