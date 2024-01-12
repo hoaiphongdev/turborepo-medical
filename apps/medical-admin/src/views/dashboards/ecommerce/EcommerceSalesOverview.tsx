@@ -17,7 +17,6 @@ import { ThemeColor } from 'config-mui'
 
 // ** Custom Components Imports
 import CustomAvatar from '@core/components/mui/avatar'
-import OptionsMenu from '@core/components/option-menu'
 
 interface SaleDataType {
   stats: string
@@ -28,21 +27,21 @@ interface SaleDataType {
 
 const salesData: SaleDataType[] = [
   {
-    stats: '8,458',
+    stats: '52',
     color: 'primary',
-    title: 'Customers',
+    title: 'Nhà thuốc/Bệnh viện',
     icon: <Icon icon="mdi:account-outline" />
   },
   {
-    stats: '$28.5k',
+    stats: '672',
     color: 'warning',
-    title: 'Total Profit',
+    title: 'Sản phẩm',
     icon: <Icon icon="mdi:poll" />
   },
   {
     color: 'info',
-    stats: '2,450k',
-    title: 'Transactions',
+    stats: '20',
+    title: 'Danh mục',
     icon: <Icon icon="mdi:trending-up" />
   }
 ]
@@ -70,25 +69,8 @@ const EcommerceSalesOverview = () => {
     <Card>
       <CardHeader
         sx={{ pb: 3.25 }}
-        title="Sales Overview"
+        title="Tổng quan"
         titleTypographyProps={{ variant: 'h6' }}
-        action={
-          <OptionsMenu
-            options={['Last 28 Days', 'Last Month', 'Last Year']}
-            iconButtonProps={{ size: 'small', className: 'card-more-options' }}
-          />
-        }
-        subheader={
-          <Box sx={{ display: 'flex', alignItems: 'center', '& svg': { color: 'success.main' } }}>
-            <Typography variant="caption" sx={{ mr: 1.5 }}>
-              Total 42.5k Sales
-            </Typography>
-            <Typography variant="subtitle2" sx={{ color: 'success.main' }}>
-              +18%
-            </Typography>
-            <Icon icon="mdi:chevron-up" fontSize={20} />
-          </Box>
-        }
       />
       <CardContent>
         <Grid container spacing={6}>
