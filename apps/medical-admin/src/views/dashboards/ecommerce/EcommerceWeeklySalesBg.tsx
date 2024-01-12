@@ -28,33 +28,33 @@ interface SwiperData {
 
 const data: SwiperData[] = [
   {
-    title: 'Fashion',
-    img: '/images/cards/apple-watch-green-lg.png',
+    title: 'Thuốc',
+    img: '/images/categories/pill.png',
     details: {
-      'T-shirts': '16',
-      Shoes: '43',
-      Watches: '29',
-      SunGlasses: '7'
+      'Viên sủi Efferalgan': '907',
+      'Paralmax Extra': '457',
+      'Viên uống Léana Ocavill': '321',
+      'Panadol': '7'
     }
   },
   {
-    title: 'Mobiles & Computers',
-    img: '/images/cards/apple-iphone-x-lg.png',
+    title: 'Thiêt bị y tế',
+    img: '/images/categories/tools.png',
     details: {
-      Mobiles: '24',
-      Accessories: '50',
-      Tablets: '12',
-      Computers: '38'
+      'Nẹp': '7892',
+      'Kim tiêm 20xl': '7622',
+      'Máy đo huyết áp': '332',
+      'Bình dưỡng khí': '38'
     }
   },
   {
-    title: 'Appliances & Electronics',
-    img: '/images/cards/ps4-joystick-lg.png',
+    title: 'Sắc đẹp và sức khoẻ',
+    img: '/images/categories/beauty.png',
     details: {
-      "TV's": '16',
-      Cameras: '9',
-      Speakers: '40',
-      Consoles: '18'
+      'Whey protein': '16221',
+      'Sữa dưỡng ẩm': '16212',
+      'Mặt nạ than hoạt tính': '11231',
+      'Vitamin các loại': '11123'
     }
   }
 ]
@@ -64,30 +64,60 @@ const Slides = () => {
     <>
       {data.map((slide: SwiperData, index: number) => {
         return (
-          <Box key={index} className="keen-slider__slide">
-            <Typography variant="h6" sx={{ color: 'common.white' }}>
-              Weekly Sales
+          <Box
+            key={index}
+            className='keen-slider__slide'>
+            <Typography
+              variant='h6'
+              sx={{ color: 'common.white' }}>
+              Những danh mục bán chạy
             </Typography>
-            <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', '& svg': { color: 'success.main' } }}>
-              <Typography variant="caption" sx={{ mr: 1.5, color: 'common.white' }}>
-                Total $23.5k Earning
+            <Box
+              sx={{
+                mb: 4,
+                display: 'flex',
+                alignItems: 'center',
+                '& svg': { color: 'success.main' }
+              }}>
+              <Typography
+                variant='caption'
+                sx={{ mr: 1.5, color: 'common.white' }}>
+                ~ 892.312.000đ
               </Typography>
-              <Typography variant="subtitle2" sx={{ color: 'success.main' }}>
+              <Typography
+                variant='subtitle2'
+                sx={{ color: 'success.main' }}>
                 +62%
               </Typography>
-              <Icon icon="mdi:chevron-up" fontSize={20} />
+              <Icon
+                icon='mdi:chevron-up'
+                fontSize={20} />
             </Box>
             <Grid container>
-              <Grid item xs={12} sm={6} lg={8} sx={{ order: [2, 1] }}>
-                <Typography sx={{ mb: 4.5, color: 'common.white' }}>{slide.title}</Typography>
-                <Grid container spacing={4}>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                lg={8}
+                sx={{ order: [2, 1] }}>
+                <Typography
+                  sx={{
+                    mb: 4.5,
+                    color: 'common.white'
+                  }}>{slide.title}</Typography>
+                <Grid
+                  container
+                  spacing={4}>
                   {Object.keys(slide.details).map((key: string, index: number) => {
                     return (
-                      <Grid item key={index} xs={6}>
+                      <Grid
+                        item
+                        key={index}
+                        xs={6}>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                           <CustomAvatar
-                            color="primary"
-                            variant="rounded"
+                            color='primary'
+                            variant='rounded'
                             sx={{
                               mr: 2,
                               width: 40,
@@ -99,7 +129,9 @@ const Slides = () => {
                           >
                             {slide.details[key]}
                           </CustomAvatar>
-                          <Typography variant="caption" sx={{ color: 'common.white' }}>
+                          <Typography
+                            variant='caption'
+                            sx={{ color: 'common.white' }}>
                             {key}
                           </Typography>
                         </Box>
@@ -117,15 +149,18 @@ const Slides = () => {
                   order: [1, 2],
                   textAlign: 'center',
                   '& img': {
-                    top: 0,
-                    right: 0,
-                    height: '200px !important',
+                    top: "20px",
+                    right: "50px",
+                    height: '120px !important',
+                    width: '120px !important',
                     maxWidth: 'none !important',
                     position: ['static', 'absolute']
                   }
                 }}
               >
-                <img src={slide.img} alt={slide.title} />
+                <img
+                  src={slide.img}
+                  alt={slide.title} />
               </Grid>
             </Grid>
           </Box>
@@ -163,7 +198,7 @@ const EcommerceWeeklySalesBg = () => {
         }
         const nextTimeout = () => {
           clearTimeout(timeout as number)
-          if (mouseOver) return
+          if(mouseOver) return
           timeout = setTimeout(() => {
             slider.next()
           }, 4000)
@@ -190,13 +225,15 @@ const EcommerceWeeklySalesBg = () => {
     <Card sx={{ position: 'relative', backgroundColor: 'primary.main' }}>
       <CardContent>
         {loaded && instanceRef.current && (
-          <Box className="swiper-dots" sx={{ top: 7, right: 13, position: 'absolute' }}>
+          <Box
+            className='swiper-dots'
+            sx={{ top: 7, right: 13, position: 'absolute' }}>
             {[...Array(instanceRef.current.track.details.slides.length).keys()].map((idx) => {
               return (
                 <Badge
                   key={idx}
-                  variant="dot"
-                  component="div"
+                  variant='dot'
+                  component='div'
                   className={clsx({
                     active: currentSlide === idx
                   })}
@@ -221,7 +258,9 @@ const EcommerceWeeklySalesBg = () => {
             })}
           </Box>
         )}
-        <Box ref={sliderRef} className="keen-slider">
+        <Box
+          ref={sliderRef}
+          className='keen-slider'>
           <Slides />
         </Box>
       </CardContent>

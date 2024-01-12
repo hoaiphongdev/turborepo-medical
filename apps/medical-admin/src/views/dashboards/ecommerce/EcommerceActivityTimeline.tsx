@@ -1,7 +1,6 @@
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import Avatar from '@mui/material/Avatar'
 import { styled } from '@mui/material/styles'
 import TimelineDot from '@mui/lab/TimelineDot'
 import TimelineItem from '@mui/lab/TimelineItem'
@@ -14,7 +13,6 @@ import TimelineConnector from '@mui/lab/TimelineConnector'
 import MuiTimeline, { TimelineProps } from '@mui/lab/Timeline'
 
 // ** Custom Components Imports
-import OptionsMenu from '@core/components/option-menu'
 
 // Styled Timeline component
 const Timeline = styled(MuiTimeline)<TimelineProps>({
@@ -32,13 +30,7 @@ const EcommerceActivityTimeline = () => {
   return (
     <Card>
       <CardHeader
-        title="Activity Timeline"
-        action={
-          <OptionsMenu
-            options={['Last 28 Days', 'Last Month', 'Last Year']}
-            iconButtonProps={{ size: 'small', className: 'card-more-options' }}
-          />
-        }
+        title="Hoạt động gần đây"
       />
       <CardContent sx={{ pt: (theme) => `${theme.spacing(2.5)} !important` }}>
         <Timeline sx={{ my: 0, py: 0 }}>
@@ -57,18 +49,18 @@ const EcommerceActivityTimeline = () => {
                   justifyContent: 'space-between'
                 }}
               >
-                <Typography sx={{ mr: 2, fontWeight: 600 }}>8 Invoices have been paid</Typography>
+                <Typography sx={{ mr: 2, fontWeight: 600 }}>Hoá đơn Hospital Playlist đã được thanh toán</Typography>
                 <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-                  Wednesday
+                  2024/01/12
                 </Typography>
               </Box>
               <Typography variant="body2" sx={{ mb: 2 }}>
-                Invoices have been paid to the company.
+                Thông tin hoá đơn
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <img width={24} height={24} alt="invoice.pdf" src="/images/icons/file-icons/pdf.png" />
                 <Typography variant="subtitle2" sx={{ ml: 2, fontWeight: 600 }}>
-                  bookingCard.pdf
+                  hospital-playlist.invoice.pdf
                 </Typography>
               </Box>
             </TimelineContent>
@@ -89,18 +81,17 @@ const EcommerceActivityTimeline = () => {
                   justifyContent: 'space-between'
                 }}
               >
-                <Typography sx={{ mr: 2, fontWeight: 600 }}>Create a new project for client 😎</Typography>
+                <Typography sx={{ mr: 2, fontWeight: 600 }}>Nhà thuốc Long Châu vừa được thêm vào hệ thống</Typography>
                 <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-                  April, 18
+                  2024/01/1
                 </Typography>
               </Box>
               <Typography variant="body2" sx={{ mb: 2 }}>
-                Invoices have been paid to the company.
+                thông tin nhà thuốc
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Avatar src="/images/avatars/1.png" sx={{ mr: 2.5, width: 24, height: 24 }} />
                 <Typography variant="body2" sx={{ fontWeight: 600, fontSize: '0.875rem' }}>
-                  John Doe (Client)
+                  longchau@gmail.com | 0123 456 789
                 </Typography>
               </Box>
             </TimelineContent>
@@ -121,12 +112,12 @@ const EcommerceActivityTimeline = () => {
                   justifyContent: 'space-between'
                 }}
               >
-                <Typography sx={{ mr: 2, fontWeight: 600 }}>Order #37745 from September</Typography>
+                <Typography sx={{ mr: 2, fontWeight: 600 }}>Sản phẩm "Whey protein" vừa được cập nhật</Typography>
                 <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-                  January, 10
+                  2023/12/10
                 </Typography>
               </Box>
-              <Typography variant="body2">Invoices have been paid to the company.</Typography>
+              <Typography variant="body2">Truy cập vào trang danh sách và vào sản phảm để xem chi tiết</Typography>
             </TimelineContent>
           </TimelineItem>
         </Timeline>

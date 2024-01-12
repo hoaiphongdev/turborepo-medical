@@ -18,14 +18,8 @@ const EcommerceTotalVisits = () => {
       <CardContent>
         <Box sx={{ mb: 6.5, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
           <Box>
-            <Typography variant="body2">Total Visits</Typography>
-            <Typography variant="h6">42.5k</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', '& svg': { color: 'success.main' } }}>
-            <Typography variant="subtitle2" sx={{ color: 'success.main' }}>
-              +18.4%
-            </Typography>
-            <Icon icon="mdi:chevron-up" />
+            <Typography variant="body2">Hoá đơn đã thanh toán</Typography>
+            <Typography variant="h6">2.223.675.000đ</Typography>
           </Box>
         </Box>
         <Box sx={{ mb: 5, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -39,12 +33,9 @@ const EcommerceTotalVisits = () => {
               >
                 <Icon icon="mdi:cellphone" fontSize="0.875rem" />
               </CustomAvatar>
-              <Typography variant="body2">Mobile</Typography>
+              <Typography variant="body2">Chờ thanh toán</Typography>
             </Box>
-            <Typography variant="h6">23.5%</Typography>
-            <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-              2,890
-            </Typography>
+            <Typography variant="h6">892.321.112đ</Typography>
           </Box>
           <Divider flexItem sx={{ m: 0 }} orientation="vertical">
             <CustomAvatar
@@ -58,16 +49,13 @@ const EcommerceTotalVisits = () => {
           <Box sx={{ display: 'flex', alignItems: 'flex-end', flexDirection: 'column' }}>
             <Box sx={{ mb: 2.5, display: 'flex', alignItems: 'center' }}>
               <Typography sx={{ mr: 1.5 }} variant="body2">
-                Desktop
+                Đã thanh toán
               </Typography>
               <CustomAvatar skin="light" variant="rounded" sx={{ height: 24, width: 24, borderRadius: '6px' }}>
                 <Icon icon="mdi:monitor" fontSize="0.875rem" />
               </CustomAvatar>
             </Box>
-            <Typography variant="h6">76.5%</Typography>
-            <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-              22,465
-            </Typography>
+            <Typography variant="h6">1.478.212.210đ</Typography>
           </Box>
         </Box>
         <LinearProgress
