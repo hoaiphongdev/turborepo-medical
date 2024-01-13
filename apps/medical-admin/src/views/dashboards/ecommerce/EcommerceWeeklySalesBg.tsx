@@ -150,9 +150,9 @@ const Slides = () => {
                   textAlign: 'center',
                   '& img': {
                     top: "20px",
-                    right: "50px",
-                    height: '120px !important',
-                    width: '120px !important',
+                    right: "30px",
+                    height: '80px !important',
+                    width: '80px !important',
                     maxWidth: 'none !important',
                     position: ['static', 'absolute']
                   }

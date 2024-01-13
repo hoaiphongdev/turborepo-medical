@@ -19,7 +19,7 @@ const EcommerceTotalVisits = () => {
         <Box sx={{ mb: 6.5, display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
           <Box>
             <Typography variant="body2">Hoá đơn đã thanh toán</Typography>
-            <Typography variant="h6">2.223.675.000đ</Typography>
+            <Typography variant="h6">2.223M đ</Typography>
           </Box>
         </Box>
         <Box sx={{ mb: 5, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -35,7 +35,7 @@ const EcommerceTotalVisits = () => {
               </CustomAvatar>
               <Typography variant="body2">Chờ thanh toán</Typography>
             </Box>
-            <Typography variant="h6">892.321.112đ</Typography>
+            <Typography variant="h6">892M đ</Typography>
           </Box>
           <Divider flexItem sx={{ m: 0 }} orientation="vertical">
             <CustomAvatar
@@ -55,7 +55,7 @@ const EcommerceTotalVisits = () => {
                 <Icon icon="mdi:monitor" fontSize="0.875rem" />
               </CustomAvatar>
             </Box>
-            <Typography variant="h6">1.478.212.210đ</Typography>
+            <Typography variant="h6">1.478M đ</Typography>
           </Box>
         </Box>
         <LinearProgress
