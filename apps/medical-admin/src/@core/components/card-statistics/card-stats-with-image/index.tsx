@@ -89,12 +89,13 @@ const CardStatsCharacter = ({ data, showAction = true }: Props) => {
             sx={{
               display: 'flex',
               alignItems: 'flex-end',
-              justifyContent: 'flex-end'
+              justifyContent: 'flex-end',
+              marginBottom:"20px"
             }}>
             <img
               src={src}
               alt={title}
-              height={134} />
+              height={60} />
           </Grid>
         </Grid>
       </CardContent>
