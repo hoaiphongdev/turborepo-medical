@@ -41,6 +41,7 @@ import { IconButton } from '@mui/material'
 import { isEmpty } from 'lodash'
 import useClipboard from '@core/hooks/useClipboard'
 import toast from 'react-hot-toast'
+import OptionsMenu from '@core/components/option-menu'
 
 export const getInitials = (string: string) =>
   string.split(/\s/).reduce((response, word) => (response += word.slice(0, 1)), '')
@@ -62,14 +63,16 @@ const renderClient = (params: GridRenderCellParams) => {
   const states = ['success', 'error', 'warning', 'info', 'primary', 'secondary']
   const color = states[stateNum]
 
-  if (!isEmpty(row?.customerInformation?.avatar)) {
+  if(!isEmpty(row?.customerInformation?.avatar)) {
     return (
-      <CustomAvatar src={`${row?.customerInformation?.avatar}`} sx={{ mr: 3, width: '1.875rem', height: '1.875rem' }} />
+      <CustomAvatar
+        src={`${row?.customerInformation?.avatar}`}
+        sx={{ mr: 3, width: '1.875rem', height: '1.875rem' }} />
     )
   } else {
     return (
       <CustomAvatar
-        skin="light"
+        skin='light'
         color={color as ThemeColor}
         sx={{ mr: 3, fontSize: '.8rem', width: '1.875rem', height: '1.875rem' }}
       >
@@ -99,7 +102,10 @@ const invoiceStatusObj: InvoiceStatusObj = {
 
 const InvoiceListPage = () => {
   // ** State
-  const [paginationModel, setPaginationModel] = useState({ page: 0, pageSize: 10 })
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10
+  })
   const clipboard = useClipboard()
 
   const handleCopyPaymentLink = (invoiceId: string) => {
@@ -172,7 +178,7 @@ const InvoiceListPage = () => {
         const color = invoiceStatusObj[invoiceStatus] ? invoiceStatusObj[invoiceStatus].color : 'primary'
 
         let textStatus = ''
-        switch (invoiceStatus) {
+        switch(invoiceStatus) {
           case 'paid':
             textStatus = 'Đã thanh toán'
             break
@@ -193,13 +199,17 @@ const InvoiceListPage = () => {
           <Tooltip
             title={
               <div>
-                <Typography variant="caption" sx={{ color: 'common.white', fontWeight: 600 }}>
+                <Typography
+                  variant='caption'
+                  sx={{ color: 'common.white', fontWeight: 600 }}>
                   {textStatus}
                 </Typography>
                 {!isEmpty(row.paidAt) && (
                   <>
                     <br />
-                    <Typography variant="caption" sx={{ color: 'common.white', fontWeight: 600 }}>
+                    <Typography
+                      variant='caption'
+                      sx={{ color: 'common.white', fontWeight: 600 }}>
                       Ngày thanh toán:
                     </Typography>{' '}
                     {dayjs(row.paidAt).format('YYYY-MM-DD')}
@@ -208,8 +218,13 @@ const InvoiceListPage = () => {
               </div>
             }
           >
-            <CustomAvatar skin="light" color={color} sx={{ width: 34, height: 34 }}>
-              <Icon icon={invoiceStatusObj[invoiceStatus].icon} fontSize="1.25rem" />
+            <CustomAvatar
+              skin='light'
+              color={color}
+              sx={{ width: 34, height: 34 }}>
+              <Icon
+                icon={invoiceStatusObj[invoiceStatus].icon}
+                fontSize='1.25rem' />
             </CustomAvatar>
           </Tooltip>
         )
@@ -230,12 +245,19 @@ const InvoiceListPage = () => {
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography
                 noWrap
-                variant="body2"
-                sx={{ color: 'text.primary', fontWeight: 500, lineHeight: '22px', letterSpacing: '.1px' }}
+                variant='body2'
+                sx={{
+                  color: 'text.primary',
+                  fontWeight: 500,
+                  lineHeight: '22px',
+                  letterSpacing: '.1px'
+                }}
               >
                 {name}
               </Typography>
-              <Typography noWrap variant="caption">
+              <Typography
+                noWrap
+                variant='caption'>
                 {companyEmail}
               </Typography>
             </Box>
@@ -248,14 +270,16 @@ const InvoiceListPage = () => {
       minWidth: 90,
       field: 'total',
       headerName: 'Tổng',
-      renderCell: ({ row }: CellType) => <Typography variant="body2">{`${formatCurrencyVND(row.total)}`}</Typography>
+      renderCell: ({ row }: CellType) =>
+        <Typography variant='body2'>{`${formatCurrencyVND(row.total)}`}</Typography>
     },
     {
       flex: 0.15,
       minWidth: 125,
       field: 'issuedDate',
       headerName: 'Ngày phát hành',
-      renderCell: ({ row }: CellType) => <Typography variant="body2">{row.issuedDate}</Typography>
+      renderCell: ({ row }: CellType) =>
+        <Typography variant='body2'>{row.issuedDate}</Typography>
     },
     {
       flex: 0.1,
@@ -264,11 +288,17 @@ const InvoiceListPage = () => {
       headerName: 'Cần thanh toán',
       renderCell: ({ row }: CellType) => {
         return row.balance !== 0 ? (
-          <Typography variant="body2" sx={{ color: 'text.primary' }}>
+          <Typography
+            variant='body2'
+            sx={{ color: 'text.primary' }}>
             {formatCurrencyVND(row.balance as number)}
           </Typography>
         ) : (
-          <CustomChip size="small" skin="light" color="success" label="Paid" />
+          <CustomChip
+            size='small'
+            skin='light'
+            color='success'
+            label='Paid' />
         )
       }
     },
@@ -280,40 +310,42 @@ const InvoiceListPage = () => {
       headerName: 'Actions',
       renderCell: ({ row }: CellType) => (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Tooltip title="In/tải hóa đơn">
+          <Tooltip title='Sao chép link thanh toán'>
             <IconButton
-              color="info"
-              size="small"
-              target="_blank"
-              component={Link}
+              size='small'
               sx={{ mr: 0.5 }}
-              href={`/invoice/print/${row._id}`}
-            >
-              <Icon icon="mdi:printer" />
+              onClick={() => handleCopyPaymentLink(row._id)}>
+              <Icon icon='mdi:content-copy' />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Sao chép link thanh toán">
-            <IconButton color="warning" size="small" sx={{ mr: 0.5 }} onClick={() => handleCopyPaymentLink(row._id)}>
-              <Icon icon="mdi:content-copy" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="in QR thanh toán">
-            <IconButton
-              color="error"
-              target="_blank"
-              size="small"
-              component={Link}
-              sx={{ mr: 0.5 }}
-              href={`/invoice/qr/${row._id}`}
-            >
-              <Icon icon="mdi:qrcode-scan" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip color="success" title="Chỉnh sửa">
-            <IconButton size="small" component={Link} sx={{ mr: 0.5 }} href={`/invoice/edit-invoice/${row._id}`}>
-              <Icon icon="mdi:pencil-outline" />
-            </IconButton>
-          </Tooltip>
+          <OptionsMenu
+            iconProps={{ fontSize: 20 }}
+            iconButtonProps={{ size: 'small' }}
+            menuProps={{ sx: { '& .MuiMenuItem-root svg': { mr: 2 } } }}
+            options={[
+              {
+                text: 'In/tải hóa đơn',
+                href: `/invoice/print/${row._id}`,
+                icon: <Icon
+                  icon='mdi:printer'
+                  fontSize={20} />
+              },
+              {
+                text: 'In QR thanh toán',
+                href: `/invoice/qr/${row._id}`,
+                icon: <Icon
+                  icon='mdi:qrcode-scan'
+                  fontSize={20} />
+              },
+              {
+                text: 'Chỉnh sửa',
+                href: `/invoice/edit-invoice/${row._id}`,
+                icon: <Icon
+                  icon='mdi:pencil-outline'
+                  fontSize={20} />
+              }
+            ]}
+          />
         </Box>
       )
     }
@@ -323,12 +355,18 @@ const InvoiceListPage = () => {
 
   return (
     <DatePickerWrapper>
-      <Grid container spacing={6}>
-        <Grid item xs={12}>
+      <Grid
+        container
+        spacing={6}>
+        <Grid
+          item
+          xs={12}>
           <Card>
             <TableHeader />
             {isLoading || isRefetching ? (
-              <Typography variant="body2" sx={{ margin: 7 }}>
+              <Typography
+                variant='body2'
+                sx={{ margin: 7 }}>
                 Loading
               </Typography>
             ) : (
