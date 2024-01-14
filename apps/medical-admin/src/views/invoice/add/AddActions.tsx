@@ -55,6 +55,7 @@ const AddActions = (props: AddActionProps) => {
                 >
                   <MenuItem value="bank_transfer">Ngân hàng</MenuItem>
                   <MenuItem value="cash">Tiền mặt</MenuItem>
+                  <MenuItem value="credit_card">Online</MenuItem>
                 </Select>
               )}
             />
